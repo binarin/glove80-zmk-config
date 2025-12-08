@@ -174,10 +174,10 @@
         mouse_layer {
             bindings = <
             &none      &none            &none           &none           &none                                                                                                          &none        &none        &none         &none           &none
-            &none      &none            &none           &none           &none           &none                                                                             &none        &none        &none        &none         &none           &none
+            &none      &none            &none           &kp PG_UP       &none           &none                                                                             &none        &none        &none        &none         &none           &none
             &none      &msc SCRL_UP     &msc SCRL_LEFT  &mmv MOVE_UP    &msc SCRL_RIGHT &kp LC(X)                                                                         &none        &none        &none        &none         &none           &none
             &none      &msc SCRL_DOWN   &mmv MOVE_LEFT  &mmv MOVE_DOWN  &mmv MOVE_RIGHT &kp LC(C)                                                                         &none        &kp RCTL     &kp RSHIFT   &kp RALT      &kp RGUI        &none
-            &none      &none            &none           &none           &none           &kp LC(V)   &mkp MCLK   &none       &mkp MB4    &none       &none       &none     &none        &none        &none        &none         &none           &none
+            &none      &none            &none           &kp PG_DN       &none           &kp LC(V)   &mkp MCLK   &none       &mkp MB4    &none       &none       &none     &none        &none        &none        &none         &none           &none
             &none      &none            &none           &none           &none                       &mkp LCLK   &mkp RCLK   &mkp MB5    &none       &none       &none                  &none        &none        &none         &none           &none
             >;
         };
