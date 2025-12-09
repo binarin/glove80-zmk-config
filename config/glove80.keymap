@@ -15,12 +15,13 @@
 #define HYPER LC(LS(LG(LALT)))
 
 // layers
-#define DEFAULT 0
-#define LOWER 1
-#define FUNC  2
-#define MOUSE 3
-#define MAGIC 4
-#define FACTORY_TEST 5
+#define L_DEFAULT     0
+#define L_LOWER       1
+#define L_FUNCTION    2
+#define L_MOUSE       3
+#define L_MAGIC       4
+#define L_NO_HM_RIGHT 5
+#define L_NO_HM_LEFT  6
 
 
 / {
@@ -32,7 +33,7 @@
             label = "LAYER_TAP_DANCE";
             #binding-cells = <0>;
             tapping-term-ms = <200>;
-            bindings = <&mo LOWER>, <&to LOWER>;
+            bindings = <&mo L_LOWER>, <&to L_LOWER>;
         };
 
         magic: magic_hold_tap {
@@ -69,6 +70,8 @@
     };
 
     macros {
+
+
         rgb_ug_status_macro: rgb_ug_status_macro_0 {
             label = "RGB_UG_STATUS";
             compatible = "zmk,behavior-macro";
@@ -114,8 +117,61 @@
         };
     };
 
+    #define MENU_FUN &lt FUNC K_CMENU
+    #define INS_MOU &lt MOUSE INS
+    #define _____
+    #define KP(x) &kp x
+    #define HM_A &hml LGUI A
+    #define HM_S &hml LALT S
+    #define HM_D &hml LSHFT D
+    #define HM_F &hml LCTRL F
+    #define HM_G &hml HYPER G
+
+    #define HM_H &hmr HYPER H
+    #define HM_J &hmr LCTRL J
+    #define HM_K &hmr LSHFT K
+    #define HM_L &hmr LALT L
+    #define HM_SEMI &hmr LGUI SEMI
+    #define MAGIC &magic L_MAGIC 0
+
+    #define T_RET &lt L_MOUSE RET
+    #define T_ESC &lt L_FUNCTION ESC
+
+    #define TO_DEF &to L_DEFAULT
+    #define MKP(x) &mkp x
+    #define MMV(x) &mmv x
+    #define MSC(x) &msc x
+
+    #define RGB_UG(x) &rgb_ug x
+    #define BT(x) &bt BT_##x
+    #define nOUT(x) &out OUT_##x
+
+
     keymap {
         compatible = "zmk,keymap";
+
+        /*
+        _layer {
+            bindings = <
+            &none &none &none &none &none _____ _____ _____ _____ _____ _____ _____ _____ &none &none &none &none &none
+            &none &none &none &none &none &none _____ _____ _____ _____ _____ _____ &none &none &none &none &none &none
+            &none &none &none &none &none &none _____ _____ _____ _____ _____ _____ &none &none &none &none &none &none
+            &none &none &none &none &none &none _____ _____ _____ _____ _____ _____ &none &none &none &none &none &none
+            &none &none &none &none &none &none &none &none &none &none &none &none &none &none &none &none &none &none
+            &none &none &none &none &none _____ &none &none &none &none &none &none _____ &none &none &none &none &none
+            >;
+        };
+        _layer {
+            bindings = <
+            &trans &trans &trans &trans &trans _____  _____  _____  _____  _____  _____  _____  _____  &trans &trans &trans &trans &trans
+            &trans &trans &trans &trans &trans &trans _____  _____  _____  _____  _____  _____  &trans &trans &trans &trans &trans &trans
+            &trans &trans &trans &trans &trans &trans _____  _____  _____  _____  _____  _____  &trans &trans &trans &trans &trans &trans
+            &trans &trans &trans &trans &trans &trans _____  _____  _____  _____  _____  _____  &trans &trans &trans &trans &trans &trans
+            &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans
+            &trans &trans &trans &trans &trans _____  &trans &trans &trans &trans &trans &trans _____  &trans &trans &trans &trans &trans
+            >;
+        };
+        */
 
         default_layer {
             // ---------------------------------------------------------------------------------------------------------------------------------
@@ -127,81 +183,83 @@
             // | MAGIC | HOME| END | LEFT | RIGHT|      | BSPC  | DEL   | LALT  | | RALT  | RET   | SPACE |      |  UP   | DOWN  |  [   |   ]   | PGDN |  5+3+3+5 (64-79) l:64-71 r:72-79
 
             bindings = <
-            &kp DOWN       &kp UP      &none       &none        &none                                                                                                             &none         &none             &none             &kp LEFT          &kp RIGHT
-            &kp EQUAL      &kp N1      &kp N2      &kp N3       &kp N4       &kp N5                                                                                 &kp N6        &kp N7        &kp N8            &kp N9            &kp N0            &kp MINUS
-            &kp TAB        &kp Q       &kp W       &kp E        &kp R        &kp T                                                                                  &kp Y         &kp U         &kp I             &kp O             &kp P             &kp BSLH
-            &kp ESC        &hml LGUI A &hml LALT S &hml LSHFT D &hml LCTRL F &hml HYPER G                                                                           &hmr HYPER H  &hmr RCTRL J  &hmr RSHIFT K     &hmr RALT L       &hmr RGUI SEMI    &kp SQT
-            &kp GRAVE      &kp Z       &kp X       &kp C        &kp V        &kp B   &lt FUNC ESC &kp K_CMENU &layer_td    &layer_td    &kp INS         &kp RET     &kp N         &kp M         &kp COMMA         &kp DOT           &kp FSLH          &kp PG_UP
-            &magic MAGIC 0 &kp HOME    &kp END     &kp LEFT     &kp RIGHT            &kp BSPC     &kp DEL     &caps_word   &caps_word   &lt MOUSE TAB   &kp SPACE                 &kp UP        &kp DOWN          &kp LBKT          &kp RBKT          &kp PG_DN
+            &none     &none  &none  &none    &none     _____  _____    _____       _____      _____      _____   _____     _____  &none  &none     &none    &none    &none
+            KP(EQUAL) KP(N1) KP(N2) KP(N3)   KP(N4)    KP(N5) _____    _____       _____      _____      _____   _____     KP(N6) KP(N7) KP(N8)    KP(N9)   KP(N0)   KP(MINUS)
+            &none     KP(Q)  KP(W)  KP(E)    KP(R)     KP(T)  _____    _____       _____      _____      _____   _____     KP(Y)  KP(U)  KP(I)     KP(O)    KP(P)    KP(BSLH)
+            &none     HM_A   HM_S   HM_D     HM_F      HM_G   _____    _____       _____      _____      _____   _____     HM_H   HM_J   HM_K      HM_L     HM_SEMI  KP(SQT)
+            KP(GRAVE) KP(Z)  KP(X)  KP(C)    KP(V)     KP(B)  T_ESC    KP(K_CMENU) &layer_td  &layer_td  KP(INS) KP(TAB)   KP(N)  KP(M)  KP(COMMA) KP(DOT)  KP(FSLH) &none
+            MAGIC     &none  &none  KP(LEFT) KP(RIGHT) _____  KP(BSPC) KP(DEL)     &caps_word &caps_word T_RET   KP(SPACE) _____  KP(UP) KP(DOWN)  KP(LBKT) KP(RBKT) &none
             >;
         };
 
         lower_layer {
             bindings = <
-            &kp C_BRI_DN      &kp C_BRI_UP        &kp C_PREV      &kp C_NEXT      &kp C_PP                                                                                                           &kp C_MUTE   &kp C_VOL_DN &kp C_VOL_UP  &none           &kp PAUSE_BREAK
-            &trans            &kp LG(N1)          &kp LG(N2)      &kp LG(N3)      &kp LG(N4)      &kp LG(N5)                                                                            &kp LPAR     &kp KP_NUM   &kp KP_EQUAL &kp KP_DIVIDE &kp KP_MULTIPLY &kp PSCRN
-            &trans            &none               &none           &kp UP          &none           &kp END                                                                               &kp RPAR     &kp KP_N7    &kp KP_N8    &kp KP_N9     &kp KP_MINUS    &kp SLCK
-            &trans            &none               &kp LEFT        &kp DOWN        &kp RIGHT       &kp PG_UP                                                                             &kp PRCNT    &kp KP_N4    &kp KP_N5    &kp KP_N6     &kp KP_PLUS     &none
-            &trans            &kp K_CMENU         &none           &kp F11         &kp F12         &kp PG_DN       &trans      &trans      &to DEFAULT &to DEFAULT &trans      &trans    &kp COMMA    &kp KP_N1    &kp KP_N2    &kp KP_N3     &kp KP_ENTER    &trans
-            &trans            &kp CAPS            &kp INS         &kp F11         &kp F12                         &trans      &trans      &trans      &trans      &trans      &trans                 &kp KP_N0    &kp KP_N0    &kp KP_DOT    &kp KP_ENTER    &trans
+            KP(C_BRI_DN) KP(C_BRI_UP) KP(C_PREV) KP(C_NEXT) KP(C_PP)   _____      _____  _____  _____  _____  _____  _____  _____     KP(C_MUTE) KP(C_VOL_DN) KP(C_VOL_UP)  &none           KP(PAUSE_BREAK)
+            &trans       KP(LG(N1))   KP(LG(N2)) KP(LG(N3)) KP(LG(N4)) KP(LG(N5)) _____  _____  _____  _____  _____  _____  KP(LPAR)  KP(KP_NUM) KP(KP_EQUAL) KP(KP_DIVIDE) KP(KP_MULTIPLY) KP(PSCRN)
+            &trans       &none        &none      KP(UP)     &none      KP(END)    _____  _____  _____  _____  _____  _____  KP(RPAR)  KP(KP_N7)  KP(KP_N8)    KP(KP_N9)     KP(KP_MINUS)    KP(SLCK)
+            &trans       &none        KP(LEFT)   KP(DOWN)   KP(RIGHT)  KP(PG_UP)  _____  _____  _____  _____  _____  _____  KP(PRCNT) KP(KP_N4)  KP(KP_N5)    KP(KP_N6)     KP(KP_PLUS)     &none
+            &trans       KP(K_CMENU)  &none      KP(F11)    KP(F12)    KP(PG_DN)  &trans &trans TO_DEF TO_DEF &trans &trans KP(COMMA) KP(KP_N1)  KP(KP_N2)    KP(KP_N3)     KP(KP_ENTER)    &trans
+            &trans       KP(CAPS)     KP(INS)    KP(F11)    KP(F12)    _____      &trans &trans &trans &trans &trans &trans _____     KP(KP_N0)  KP(KP_N0)    KP(KP_DOT)    KP(KP_ENTER)    &trans
             >;
         };
-
 
         function_layer {
             bindings = <
-            &none      &none        &none      &none       &none                                                                                                      &none        &none        &none         &none           &none
-            &none      &none        &none      &none       &none       &none                                                                             &none        &none        &none        &none         &none           &none
-            &none      &none        &none      &none       &none       &none                                                                             &none        &kp F7       &kp F8       &kp F9        &kp F10         &kp F13
-            &none      &kp LGUI     &kp LALT   &kp LSHIFT  &kp LCTRL   &none                                                                             &none        &kp F4       &kp F5       &kp F6        &kp F11         &kp F14
-            &none      &none        &none      &none       &none       &none       &none       &none       &none       &none       &none       &none     &none        &kp F1       &kp F2       &kp F3        &kp F12         &kp F15
-            &none      &none        &none      &none       &none                   &none       &none       &none       &none       &none       &none                  &none        &none        &none         &none           &none
+            &none &none    &none    &none      &none     _____     _____ _____ _____ _____ _____ _____ _____ &none  &none  &none  &none   &none
+            &none &none    &none    &none      &none     &none     _____ _____ _____ _____ _____ _____ &none &none  &none  &none  &none   &none
+            &none &none    &none    &none      &none     &none     _____ _____ _____ _____ _____ _____ &none KP(F7) KP(F8) KP(F9) KP(F10) KP(F13)
+            &none KP(LGUI) KP(LALT) KP(LSHIFT) KP(LCTRL) KP(HYPER) _____ _____ _____ _____ _____ _____ &none KP(F4) KP(F5) KP(F6) KP(F11) KP(F14)
+            &none &none    &none    &none      &none     &none     &none &none &none &none &none &none &none KP(F1) KP(F2) KP(F3) KP(F12) KP(F15)
+            &none &none    &none    &none      &none     _____     &none &none &none &none &none &none _____ &none  &none  &none  &none   &none
             >;
         };
 
-        /*
-        _layer {
-            bindings = <
-            &none      &none        &none      &none       &none                                                                                                      &none        &none        &none         &none           &none
-            &none      &none        &none      &none       &none       &none                                                                             &none        &none        &none        &none         &none           &none
-            &none      &none        &none      &none       &none       &none                                                                             &none        &none        &none        &none         &none           &none
-            &none      &none        &none      &none       &none       &none                                                                             &none        &none        &none        &none         &none           &none
-            &none      &none        &none      &none       &none       &none       &none       &none       &none       &none       &none       &none     &none        &none        &none        &none         &none           &none
-            &none      &none        &none      &none       &none                   &none       &none       &none       &none       &none       &none                  &none        &none        &none         &none           &none
-            >;
-        };
-        */
         mouse_layer {
             bindings = <
-            &none      &none            &none           &none           &none                                                                                                          &none        &none        &none         &none           &none
-            &none      &none            &none           &kp PG_UP       &none           &none                                                                             &none        &none        &none        &none         &none           &none
-            &none      &msc SCRL_UP     &msc SCRL_LEFT  &mmv MOVE_UP    &msc SCRL_RIGHT &kp LC(X)                                                                         &none        &none        &none        &none         &none           &none
-            &none      &msc SCRL_DOWN   &mmv MOVE_LEFT  &mmv MOVE_DOWN  &mmv MOVE_RIGHT &kp LC(C)                                                                         &none        &kp RCTL     &kp RSHIFT   &kp RALT      &kp RGUI        &none
-            &none      &none            &none           &kp PG_DN       &none           &kp LC(V)   &mkp MCLK   &none       &mkp MB4    &none       &none       &none     &none        &none        &none        &none         &none           &none
-            &none      &none            &none           &none           &none                       &mkp LCLK   &mkp RCLK   &mkp MB5    &none       &none       &none                  &none        &none        &none         &none           &none
+            &none &none          &none          &none          &none           _____     _____     _____     _____    _____ _____ _____ _____ &none    &none      &none    &none    &none
+            &none &none          &none          KP(PG_UP)      &none           &none     _____     _____     _____    _____ _____ _____ &none &none    &none      &none    &none    &none
+            &none MSC(SCRL_UP)   MSC(SCRL_LEFT) MMV(MOVE_UP)   MSC(SCRL_RIGHT) KP(LC(X)) _____     _____     _____    _____ _____ _____ &none &none    &none      &none    &none    &none
+            &none MSC(SCRL_DOWN) MMV(MOVE_LEFT) MMV(MOVE_DOWN) MMV(MOVE_RIGHT) KP(LC(C)) _____     _____     _____    _____ _____ _____ &none KP(RCTL) KP(RSHIFT) KP(RALT) KP(RGUI) &none
+            &none &none          &none          KP(PG_DN)      &none           KP(LC(V)) MKP(MCLK) &none     MKP(MB4) &none &none &none &none &none    &none      &none    &none    &none
+            &none &none          &none          &none          &none           _____     MKP(LCLK) MKP(RCLK) MKP(MB5) &none &none &none _____ &none    &none      &none    &none    &none
             >;
         };
 
         magic_layer {
             bindings = <
-            &bt BT_CLR        &none               &none           &none           &none                                                                                                           &none      &none      &none      &none      &bt BT_CLR_ALL
-            &none             &none               &none           &none           &none           &none                                                                                &none      &none      &none      &none      &none      &none
-            &none             &rgb_ug RGB_SPI     &rgb_ug RGB_SAI &rgb_ug RGB_HUI &rgb_ug RGB_BRI &rgb_ug RGB_TOG                                                                      &none      &none      &none      &none      &none      &none
-            &bootloader       &rgb_ug RGB_SPD     &rgb_ug RGB_SAD &rgb_ug RGB_HUD &rgb_ug RGB_BRD &rgb_ug RGB_EFF                                                                      &none      &none      &none      &none      &none      &bootloader
-            &sys_reset        &none               &none           &none           &none           &none           &bt_2     &bt_3     &none            &none     &none     &none       &none      &none      &none      &none      &none      &sys_reset
-            &none             &none               &none           &none           &none                           &bt_0     &bt_1     &out OUT_USB     &none     &none     &none                  &none      &none      &none      &none      &to FACTORY_TEST
+            BT(CLR)     &none           &none           &none           &none           _____           _____ _____ _____    _____ _____ _____ _____ &none &none &none &none BT(CLR_ALL)
+            &none       &none           &none           &none           &none           &none           _____ _____ _____    _____ _____ _____ &none &none &none &none &none &none
+            &none       RGB_UG(RGB_SPI) RGB_UG(RGB_SAI) RGB_UG(RGB_HUI) RGB_UG(RGB_BRI) RGB_UG(RGB_TOG) _____ _____ _____    _____ _____ _____ &none &none &none &none &none &none
+            &bootloader RGB_UG(RGB_SPD) RGB_UG(RGB_SAD) RGB_UG(RGB_HUD) RGB_UG(RGB_BRD) RGB_UG(RGB_EFF) _____ _____ _____    _____ _____ _____ &none &none &none &none &none &bootloader
+            &sys_reset  &none           &none           &none           &none           &none           &bt_2 &bt_3 &none    &none &none &none &none &none &none &none &none &sys_reset
+            &none       &none           &none           &none           &none           _____           &bt_0 &bt_1 nOUT(USB) &none &none &none _____ &none &none &none &none &none
             >;
         };
 
-        factory_test_layer {
+        no_hm_right_layer {
             bindings = <
-            &kp N0   &kp N6   &kp N2   &kp N8   &kp N4                                                                              &kp N4   &kp N8   &kp N2   &kp N6   &kp N0
-            &kp N1   &kp N7   &kp N3   &kp N9   &kp N5   &kp N0                                                            &kp N0   &kp N5   &kp N9   &kp N3   &kp N7   &kp N1
-            &kp N2   &kp N8   &kp N4   &kp N0   &kp N6   &kp N1                                                            &kp N1   &kp N6   &kp N0   &kp N4   &kp N8   &kp N2
-            &kp N3   &kp N9   &kp N5   &kp N1   &kp N7   &kp N2                                                            &kp N2   &kp N7   &kp N1   &kp N5   &kp N9   &kp N3
-            &kp N4   &kp N0   &kp N6   &kp N2   &kp N8   &kp N3   &kp N4   &kp N5   &kp N6      &kp N6   &kp N5   &kp N4   &kp N3   &kp N8   &kp N2   &kp N6   &kp N0   &kp N4
-            &kp N5   &kp N1   &kp N7   &kp N3   &kp N9            &kp N7   &kp N8   &kp N9      &kp N9   &kp N8   &kp N7            &kp N9   &kp N3   &kp N7   &kp N1   &kp N5
+            &trans &trans &trans &trans &trans _____  _____  _____  _____  _____  _____  _____  _____  &trans &trans &trans &trans &trans
+            &trans &trans &trans &trans &trans &trans _____  _____  _____  _____  _____  _____  &trans &trans &trans &trans &trans &trans
+            &trans &trans &trans &trans &trans &trans _____  _____  _____  _____  _____  _____  &trans &trans &trans &trans &trans &trans
+            &trans &trans &trans &trans &trans &trans _____  _____  _____  _____  _____  _____  &trans &trans &trans &trans &trans &trans
+            &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans
+            &trans &trans &trans &trans &trans _____  &trans &trans &trans &trans &trans &trans _____  &trans &trans &trans &trans &trans
             >;
         };
+
+        no_hm_left_layer {
+            bindings = <
+            &trans &trans &trans &trans &trans _____  _____  _____  _____  _____  _____  _____  _____  &trans &trans &trans &trans &trans
+            &trans &trans &trans &trans &trans &trans _____  _____  _____  _____  _____  _____  &trans &trans &trans &trans &trans &trans
+            &trans &trans &trans &trans &trans &trans _____  _____  _____  _____  _____  _____  &trans &trans &trans &trans &trans &trans
+            &trans &trans &trans &trans KP(F)  &trans _____  _____  _____  _____  _____  _____  &trans &trans &trans &trans &trans &trans
+            &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans
+            &trans &trans &trans &trans &trans _____  &trans &trans &trans &trans &trans &trans _____  &trans &trans &trans &trans &trans
+            >;
+        };
+
+
+
+
     };
 };
