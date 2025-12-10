@@ -212,13 +212,12 @@
             // | MAGIC | HOME| END | LEFT | RIGHT|      | BSPC  | DEL   | LALT  | | RALT  | RET   | SPACE |      |  UP   | DOWN  |  [   |   ]   | PGDN |  5+3+3+5 (64-79) l:64-71 r:72-79
 
             bindings = <
-            &none     &none  &none  &none  &none  _____  _____  _____       _____      _____      _____   _____     _____  &none  &none     &none    &none    &none
-            KP(EQUAL) KP(N1) KP(N2) KP(N3) KP(N4) KP(N5) _____  _____       _____      _____      _____   _____     KP(N6) KP(N7) KP(N8)    KP(N9)   KP(N0)   KP(MINUS)
-            &none     KP(Q)  KP(W)  KP(E)  KP(R)  KP(T)  _____  _____       _____      _____      _____   _____     KP(Y)  KP(U)  KP(I)     KP(O)    KP(P)    KP(BSLH)
-            &none     HM_A   HM_S   HM_D   HM_F   HM_G   _____  _____       _____      _____      _____   _____     HM_H   HM_J   HM_K      HM_L     HM_SEMI  KP(SQT)
-            KP(GRAVE) KP(Z)  KP(X)  KP(C)  KP(V)  KP(B)  T_ESC  KP(K_CMENU) &layer_td  &layer_td  KP(INS) KP(TAB)   KP(N)  KP(M)  KP(COMMA) KP(DOT)  KP(FSLH) &none
-            MAGIC     &none  &none  &none  &none  _____  T_BSPC KP(DEL)     &caps_word &caps_word T_RET   KP(SPACE) _____  KP(UP) KP(DOWN)  KP(LBKT) KP(RBKT) MAGIC
+            KP(UP)    KP(DOWN) &none  &none  KP(K_BACK) _____  _____  _____       _____      _____      _____   _____     _____  KP(K_FORWARD) &none     &none    KP(LEFT)    KP(RIGHT)
+            KP(EQUAL) KP(N1)   KP(N2) KP(N3) KP(N4)     KP(N5) _____  _____       _____      _____      _____   _____     KP(N6) KP(N7)        KP(N8)    KP(N9)   KP(N0)      KP(MINUS)
+            &none     KP(Q)    KP(W)  KP(E)  KP(R)      KP(T)  _____  _____       _____      _____      _____   _____     KP(Y)  KP(U)         KP(I)     KP(O)    KP(P)       KP(BSLH)
+            &none     HM_A     HM_S   HM_D   HM_F       HM_G   _____  _____       _____      _____      _____   _____     HM_H   HM_J          HM_K      HM_L     HM_SEMI     KP(SQT)
             KP(GRAVE) KP(Z)    KP(X)  KP(C)  KP(V)      KP(B)  T_ESC  KP(K_CMENU) &layer_td  &layer_td  KP(INS) KP(TAB)   KP(N)  KP(M)         KP(COMMA) KP(DOT)  &slash_undo &none
+            MAGIC     &none    &none  &none  &none      _____  T_BSPC KP(DEL)     &caps_word &caps_word T_RET   KP(SPACE) _____  &none         KP(LBKT)  KP(RBKT) &none       MAGIC
             >;
         };
 
@@ -246,12 +245,12 @@
 
         mouse_layer {
             bindings = <
-            &none &none          &none          &none          &none           _____     _____     _____     _____    _____ _____ _____ _____ &none    &none      &none    &none    &none
-            &none &none          &none          KP(PG_UP)      &none           &none     _____     _____     _____    _____ _____ _____ &none &none    &none      &none    &none    &none
-            &none MSC(SCRL_UP)   MSC(SCRL_LEFT) MMV(MOVE_UP)   MSC(SCRL_RIGHT) KP(LC(X)) _____     _____     _____    _____ _____ _____ &none &none    &none      &none    &none    &none
-            &none MSC(SCRL_DOWN) MMV(MOVE_LEFT) MMV(MOVE_DOWN) MMV(MOVE_RIGHT) KP(LC(C)) _____     _____     _____    _____ _____ _____ &none KP(RCTL) KP(RSHIFT) KP(RALT) KP(RGUI) &none
-            &none &none          &none          KP(PG_DN)      &none           KP(LC(V)) MKP(MCLK) &none     MKP(MB4) &none &none &none &none &none    &none      &none    &none    &none
-            &none &none          &none          &none          &none           _____     MKP(LCLK) MKP(RCLK) MKP(MB5) &none &none &none _____ &none    &none      &none    &none    &none
+            &none &none     &none          KP(HOME)       &none           _____      _____     _____     _____    _____ _____ _____ _____ &none    &none      &none    &none    &none
+            &none &none     KP(K_BACK)     MSC(SCRL_UP)   KP(K_FORWARD)   KP(HYP(P)) _____     _____     _____    _____ _____ _____ &none &none    &none      &none    &none    &none
+            &none KP(PG_UP) MSC(SCRL_LEFT) MMV(MOVE_UP)   MSC(SCRL_RIGHT) KP(LC(X))  _____     _____     _____    _____ _____ _____ &none &none    &none      &none    &none    &none
+            &none KP(PG_DN) MMV(MOVE_LEFT) MMV(MOVE_DOWN) MMV(MOVE_RIGHT) KP(LC(C))  _____     _____     _____    _____ _____ _____ &none KP(RCTL) KP(RSHIFT) KP(RALT) KP(RGUI) &none
+            &none &none     &none          MSC(SCRL_DOWN) &none           KP(LC(V))  MKP(MCLK) &none     MKP(MB4) &none &none &none &none &none    &none      &none    &none    &none
+            &none &none     &none          KP(END)        &none           _____      MKP(LCLK) MKP(RCLK) MKP(MB5) &none &none &none _____ &none    &none      &none    &none    &none
             >;
         };
 
