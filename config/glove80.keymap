@@ -75,6 +75,13 @@
             hold-trigger-key-positions = <0 1 2 3 4 10 11 12 13 14 15 22 23 24 25 26 27 34 35 36 37 38 39 46 47 48 49 50 51 52 53 54 64 65 66 67 68 69 70 71>; // List of keys on the left side of the keyboard
             hold-trigger-on-release;
         };
+
+        slash_undo: slash_undo {
+            compatible = "zmk,behavior-mod-morph";
+            #binding-cells = <0>;
+            bindings = <&kp FSLH>, <&kp K_UNDO>;
+            mods = <(MOD_RCTL|MOD_LCTL)>;
+        };
     };
 
     macros {
@@ -211,6 +218,7 @@
             &none     HM_A   HM_S   HM_D   HM_F   HM_G   _____  _____       _____      _____      _____   _____     HM_H   HM_J   HM_K      HM_L     HM_SEMI  KP(SQT)
             KP(GRAVE) KP(Z)  KP(X)  KP(C)  KP(V)  KP(B)  T_ESC  KP(K_CMENU) &layer_td  &layer_td  KP(INS) KP(TAB)   KP(N)  KP(M)  KP(COMMA) KP(DOT)  KP(FSLH) &none
             MAGIC     &none  &none  &none  &none  _____  T_BSPC KP(DEL)     &caps_word &caps_word T_RET   KP(SPACE) _____  KP(UP) KP(DOWN)  KP(LBKT) KP(RBKT) MAGIC
+            KP(GRAVE) KP(Z)    KP(X)  KP(C)  KP(V)      KP(B)  T_ESC  KP(K_CMENU) &layer_td  &layer_td  KP(INS) KP(TAB)   KP(N)  KP(M)         KP(COMMA) KP(DOT)  &slash_undo &none
             >;
         };
 
