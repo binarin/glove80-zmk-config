@@ -13,6 +13,7 @@
 #include <dt-bindings/zmk/pointing.h>
 
 #define HYPER LC(LS(LG(LALT)))
+#define HYP(x) LC(LS(LG(LA(x))))
 
 // layers
 #define L_DEFAULT     0
@@ -22,7 +23,11 @@
 #define L_MAGIC       4
 #define L_NO_HM_RIGHT 5
 #define L_NO_HM_LEFT  6
+#define L_DESKTOP     7
 
+&lt {
+    quick-tap-ms = <175>;
+};
 
 / {
     behaviors {
@@ -131,10 +136,9 @@
         };
     };
 
-    #define MENU_FUN &lt FUNC K_CMENU
-    #define INS_MOU &lt MOUSE INS
+    // no-op to make it easy to align bindings on space
     #define _____
-    #define KP(x) &kp x
+
     #define HM_A &hml LGUI A
     #define HM_S &hml LALT S
     #define HM_D &hml LSHFT D
@@ -146,18 +150,19 @@
     #define HM_K &hmr LSHFT K
     #define HM_L &hmr LALT L
     #define HM_SEMI &hmr LGUI SEMI
-    #define MAGIC &magic L_MAGIC 0
 
+    #define T_BSPC &lt L_DESKTOP BSPC
     #define T_RET &lt L_MOUSE RET
     #define T_ESC &lt L_FUNCTION ESC
 
-    #define TO_DEF &to L_DEFAULT
+    #define BT(x) &bt BT_##x
+    #define KP(x) &kp x
+    #define MAGIC &magic L_MAGIC 0
     #define MKP(x) &mkp x
     #define MMV(x) &mmv x
     #define MSC(x) &msc x
-
     #define RGB_UG(x) &rgb_ug x
-    #define BT(x) &bt BT_##x
+    #define TO_DEF &to L_DEFAULT
     #define nOUT(x) &out OUT_##x
 
 
@@ -197,23 +202,23 @@
             // | MAGIC | HOME| END | LEFT | RIGHT|      | BSPC  | DEL   | LALT  | | RALT  | RET   | SPACE |      |  UP   | DOWN  |  [   |   ]   | PGDN |  5+3+3+5 (64-79) l:64-71 r:72-79
 
             bindings = <
-            &none     &none  &none  &none    &none     _____  _____    _____       _____      _____      _____   _____     _____  &none  &none     &none    &none    &none
-            KP(EQUAL) KP(N1) KP(N2) KP(N3)   KP(N4)    KP(N5) _____    _____       _____      _____      _____   _____     KP(N6) KP(N7) KP(N8)    KP(N9)   KP(N0)   KP(MINUS)
-            &none     KP(Q)  KP(W)  KP(E)    KP(R)     KP(T)  _____    _____       _____      _____      _____   _____     KP(Y)  KP(U)  KP(I)     KP(O)    KP(P)    KP(BSLH)
-            &none     HM_A   HM_S   HM_D     HM_F      HM_G   _____    _____       _____      _____      _____   _____     HM_H   HM_J   HM_K      HM_L     HM_SEMI  KP(SQT)
-            KP(GRAVE) KP(Z)  KP(X)  KP(C)    KP(V)     KP(B)  T_ESC    KP(K_CMENU) &layer_td  &layer_td  KP(INS) KP(TAB)   KP(N)  KP(M)  KP(COMMA) KP(DOT)  KP(FSLH) &none
-            MAGIC     &none  &none  KP(LEFT) KP(RIGHT) _____  KP(BSPC) KP(DEL)     &caps_word &caps_word T_RET   KP(SPACE) _____  KP(UP) KP(DOWN)  KP(LBKT) KP(RBKT) &none
+            &none     &none  &none  &none  &none  _____  _____  _____       _____      _____      _____   _____     _____  &none  &none     &none    &none    &none
+            KP(EQUAL) KP(N1) KP(N2) KP(N3) KP(N4) KP(N5) _____  _____       _____      _____      _____   _____     KP(N6) KP(N7) KP(N8)    KP(N9)   KP(N0)   KP(MINUS)
+            &none     KP(Q)  KP(W)  KP(E)  KP(R)  KP(T)  _____  _____       _____      _____      _____   _____     KP(Y)  KP(U)  KP(I)     KP(O)    KP(P)    KP(BSLH)
+            &none     HM_A   HM_S   HM_D   HM_F   HM_G   _____  _____       _____      _____      _____   _____     HM_H   HM_J   HM_K      HM_L     HM_SEMI  KP(SQT)
+            KP(GRAVE) KP(Z)  KP(X)  KP(C)  KP(V)  KP(B)  T_ESC  KP(K_CMENU) &layer_td  &layer_td  KP(INS) KP(TAB)   KP(N)  KP(M)  KP(COMMA) KP(DOT)  KP(FSLH) &none
+            MAGIC     &none  &none  &none  &none  _____  T_BSPC KP(DEL)     &caps_word &caps_word T_RET   KP(SPACE) _____  KP(UP) KP(DOWN)  KP(LBKT) KP(RBKT) MAGIC
             >;
         };
 
         lower_layer {
             bindings = <
-            KP(C_BRI_DN) KP(C_BRI_UP) KP(C_PREV) KP(C_NEXT) KP(C_PP)   _____      _____  _____  _____  _____  _____  _____  _____     KP(C_MUTE) KP(C_VOL_DN) KP(C_VOL_UP)  &none           KP(PAUSE_BREAK)
-            &trans       KP(LG(N1))   KP(LG(N2)) KP(LG(N3)) KP(LG(N4)) KP(LG(N5)) _____  _____  _____  _____  _____  _____  KP(LPAR)  KP(KP_NUM) KP(KP_EQUAL) KP(KP_DIVIDE) KP(KP_MULTIPLY) KP(PSCRN)
-            &trans       &none        &none      KP(UP)     &none      KP(END)    _____  _____  _____  _____  _____  _____  KP(RPAR)  KP(KP_N7)  KP(KP_N8)    KP(KP_N9)     KP(KP_MINUS)    KP(SLCK)
-            &trans       &none        KP(LEFT)   KP(DOWN)   KP(RIGHT)  KP(PG_UP)  _____  _____  _____  _____  _____  _____  KP(PRCNT) KP(KP_N4)  KP(KP_N5)    KP(KP_N6)     KP(KP_PLUS)     &none
-            &trans       KP(K_CMENU)  &none      KP(F11)    KP(F12)    KP(PG_DN)  &trans &trans TO_DEF TO_DEF &trans &trans KP(COMMA) KP(KP_N1)  KP(KP_N2)    KP(KP_N3)     KP(KP_ENTER)    &trans
-            &trans       KP(CAPS)     KP(INS)    KP(F11)    KP(F12)    _____      &trans &trans &trans &trans &trans &trans _____     KP(KP_N0)  KP(KP_N0)    KP(KP_DOT)    KP(KP_ENTER)    &trans
+            KP(C_BRI_DN) KP(C_BRI_UP) KP(C_PREV) KP(C_NEXT) KP(C_PP)  _____     _____  _____  _____  _____  _____  _____  _____     KP(C_MUTE) KP(C_VOL_DN) KP(C_VOL_UP)  &none           KP(PAUSE_BREAK)
+            &trans       &none        &none      &none      &none     &none     _____  _____  _____  _____  _____  _____  KP(LPAR)  KP(KP_NUM) KP(KP_EQUAL) KP(KP_DIVIDE) KP(KP_MULTIPLY) KP(PSCRN)
+            &trans       &none        &none      KP(UP)     &none     KP(END)   _____  _____  _____  _____  _____  _____  KP(RPAR)  KP(KP_N7)  KP(KP_N8)    KP(KP_N9)     KP(KP_MINUS)    KP(SLCK)
+            &trans       &none        KP(LEFT)   KP(DOWN)   KP(RIGHT) KP(PG_UP) _____  _____  _____  _____  _____  _____  KP(PRCNT) KP(KP_N4)  KP(KP_N5)    KP(KP_N6)     KP(KP_PLUS)     &none
+            &trans       KP(K_CMENU)  &none      KP(F11)    KP(F12)   KP(PG_DN) &trans &trans TO_DEF TO_DEF &trans &trans KP(COMMA) KP(KP_N1)  KP(KP_N2)    KP(KP_N3)     KP(KP_ENTER)    &trans
+            &trans       KP(CAPS)     KP(INS)    KP(F11)    KP(F12)   _____     &trans &trans &trans &trans &trans &trans _____     KP(KP_N0)  KP(KP_N0)    KP(KP_DOT)    KP(KP_ENTER)    &trans
             >;
         };
 
@@ -241,11 +246,11 @@
 
         magic_layer {
             bindings = <
-            BT(CLR)     &none           &none           &none           &none           _____           _____ _____ _____    _____ _____ _____ _____ &none &none &none &none BT(CLR_ALL)
-            &none       &none           &none           &none           &none           &none           _____ _____ _____    _____ _____ _____ &none &none &none &none &none &none
-            &none       RGB_UG(RGB_SPI) RGB_UG(RGB_SAI) RGB_UG(RGB_HUI) RGB_UG(RGB_BRI) RGB_UG(RGB_TOG) _____ _____ _____    _____ _____ _____ &none &none &none &none &none &none
-            &bootloader RGB_UG(RGB_SPD) RGB_UG(RGB_SAD) RGB_UG(RGB_HUD) RGB_UG(RGB_BRD) RGB_UG(RGB_EFF) _____ _____ _____    _____ _____ _____ &none &none &none &none &none &bootloader
-            &sys_reset  &none           &none           &none           &none           &none           &bt_2 &bt_3 &none    &none &none &none &none &none &none &none &none &sys_reset
+            BT(CLR)     &none           &none           &none           &none           _____           _____ _____ _____     _____ _____ _____ _____ &none &none &none &none BT(CLR_ALL)
+            &none       &none           &none           &none           &none           &none           _____ _____ _____     _____ _____ _____ &none &none &none &none &none &none
+            &none       RGB_UG(RGB_SPI) RGB_UG(RGB_SAI) RGB_UG(RGB_HUI) RGB_UG(RGB_BRI) RGB_UG(RGB_TOG) _____ _____ _____     _____ _____ _____ &none &none &none &none &none &none
+            &bootloader RGB_UG(RGB_SPD) RGB_UG(RGB_SAD) RGB_UG(RGB_HUD) RGB_UG(RGB_BRD) RGB_UG(RGB_EFF) _____ _____ _____     _____ _____ _____ &none &none &none &none &none &bootloader
+            &sys_reset  &none           &none           &none           &none           &none           &bt_2 &bt_3 &none     &none &none &none &none &none &none &none &none &sys_reset
             &none       &none           &none           &none           &none           _____           &bt_0 &bt_1 nOUT(USB) &none &none &none _____ &none &none &none &none &none
             >;
         };
@@ -271,5 +276,17 @@
             &trans &trans &trans &trans &trans _____  &trans &trans &trans &trans &trans &trans _____  &trans &trans &trans &trans &trans
             >;
         };
+
+        desktop_layer {
+            bindings = <
+            &none &none      &none      &none      &none      _____      _____ _____ _____ _____ _____     _____       _____     &none    &none &none &none        &none
+            &none KP(LG(N1)) KP(LG(N2)) KP(LG(N3)) KP(LG(N4)) KP(LG(N5)) _____ _____ _____ _____ _____     _____       &none     &none    &none &none &none        &none
+            &none KP(LG(Q))  &none      KP(LG(K))  KP(LG(A))  KP(HYP(T)) _____ _____ _____ _____ _____     _____       &none     &none    &none &none KP(HYP(P))   &none
+            &none KP(HYP(A)) KP(LG(H))  KP(LG(J))  KP(LG(L))  &none      _____ _____ _____ _____ _____     _____       &none     KP(LCTL) &none &none KP(LG(SEMI)) &none
+            &none &none      &none      KP(HYP(C)) &none      &none      &none &none &none &none KP(LG(C)) KP(LG(TAB)) KP(LG(N)) &none    &none &none &none        &none
+            &none &none      &none      &none      &none      _____      &none &none &none &none KP(LG(R)) KP(LG(D))   _____     &none    &none &none &none        &none
+            >;
+        };
+
     };
 };
