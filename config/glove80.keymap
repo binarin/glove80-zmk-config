@@ -175,6 +175,102 @@
     #define TO_DEF &to L_DEFAULT
     #define nOUT(x) &out OUT_##x
 
+    #define POS_L11 0
+    #define POS_L12 1
+    #define POS_L13 2
+    #define POS_L14 3
+    #define POS_L15 4
+    #define POS_R11 5
+    #define POS_R12 6
+    #define POS_R13 7
+    #define POS_R14 8
+    #define POS_R15 9
+    #define POS_L21 10
+    #define POS_L22 11
+    #define POS_L23 12
+    #define POS_L24 13
+    #define POS_L25 14
+    #define POS_L26 15
+    #define POS_R21 16
+    #define POS_R22 17
+    #define POS_R23 18
+    #define POS_R24 19
+    #define POS_R25 20
+    #define POS_R26 21
+    #define POS_L31 22
+    #define POS_L32 23
+    #define POS_L33 24
+    #define POS_L34 25
+    #define POS_L35 26
+    #define POS_L36 27
+    #define POS_R31 28
+    #define POS_R32 29
+    #define POS_R33 30
+    #define POS_R34 31
+    #define POS_R35 32
+    #define POS_R36 33
+    #define POS_L41 34
+    #define POS_L42 35
+    #define POS_L43 36
+    #define POS_L44 37
+    #define POS_L45 38
+    #define POS_L46 39
+    #define POS_R41 40
+    #define POS_R42 41
+    #define POS_R43 42
+    #define POS_R44 43
+    #define POS_R45 44
+    #define POS_R46 45
+    #define POS_L51 46
+    #define POS_L52 47
+    #define POS_L53 48
+    #define POS_L54 49
+    #define POS_L55 50
+    #define POS_L56 51
+    #define POS_TL11 52
+    #define POS_TL12 53
+    #define POS_TL13 54
+    #define POS_TR11 55
+    #define POS_TR12 56
+    #define POS_TR13 57
+    #define POS_R51 58
+    #define POS_R52 59
+    #define POS_R53 60
+    #define POS_R54 61
+    #define POS_R55 62
+    #define POS_R56 63
+    #define POS_L61 64
+    #define POS_L62 65
+    #define POS_L63 66
+    #define POS_L64 67
+    #define POS_L65 68
+    #define POS_TL21 69
+    #define POS_TL22 70
+    #define POS_TL23 71
+    #define POS_TR21 72
+    #define POS_TR22 73
+    #define POS_TR23 74
+    #define POS_R61 75
+    #define POS_R62 76
+    #define POS_R63 77
+    #define POS_R64 78
+    #define POS_R65 79
+
+    combos {
+        compatible = "zmk,combos";
+
+        combo_function_layer {
+            timeout-ms = <50>;
+            key-positions = <POS_TL13 POS_TL23>;
+            bindings = <&mo L_FUNCTION>;
+        };
+
+        combo_mouse_layer {
+            timeout-ms = <50>;
+            key-positions = <POS_TR11 POS_TR12>;
+            bindings = <&mo L_MOUSE>;
+        };
+    };
 
     keymap {
         compatible = "zmk,keymap";
