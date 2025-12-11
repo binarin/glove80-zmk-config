@@ -212,12 +212,12 @@
             // | MAGIC | HOME| END | LEFT | RIGHT|      | BSPC  | DEL   | LALT  | | RALT  | RET   | SPACE |      |  UP   | DOWN  |  [   |   ]   | PGDN |  5+3+3+5 (64-79) l:64-71 r:72-79
 
             bindings = <
-            KP(F1)    &none    &none   &none  &none     _____  _____     _____   _____     _____    _____   _____     _____  &none     &none     &none    &none    KP(F10)
-            KP(EQUAL) KP(N1)   KP(N2)  KP(N3) KP(N4)    KP(N5) _____     _____   _____     _____    _____   _____     KP(N6) KP(N7)    KP(N8)    KP(N9)   KP(N0)   KP(MINUS)
-            KP(TAB)   KP(Q)    KP(W)   KP(E)  KP(R)     KP(T)  _____     _____   _____     _____    _____   _____     KP(Y)  KP(U)     KP(I)     KP(O)    KP(P)    KP(BSLH)
-            KP(ESC)   HM_A     HM_S    HM_D   HM_F      HM_G   _____     _____   _____     _____    _____   _____     HM_H   HM_J      HM_K      HM_L     HM_SEMI  KP(SQT)
-            KP(GRAVE) KP(Z)    KP(X)   KP(C)  KP(V)     KP(B)  KP(LCTRL) &none   &layer_td KP(LGUI) &none   KP(RCTRL) KP(N)  KP(M)     KP(COMMA) KP(DOT)  KP(FSLH) KP(PG_UP)
-            MAGIC     KP(HOME) KP(END) &none  KP(LSHFT) _____  KP(BSPC)  KP(DEL) KP(LALT)  KP(RALT) KP(RET) KP(SPACE) _____  KP(RSHFT) KP(LBKT)  KP(RBKT) KP(PG_DN)
+            KP(F1)    &none  &none     &none    &none     _____  _____     _____    _____     _____     _____    _____     _____  &none  &none     &none    &none    KP(F10)
+            KP(EQUAL) KP(N1) KP(N2)    KP(N3)   KP(N4)    KP(N5) _____     _____    _____     _____     _____    _____     KP(N6) KP(N7) KP(N8)    KP(N9)   KP(N0)   KP(MINUS)
+            KP(TAB)   KP(Q)  KP(W)     KP(E)    KP(R)     KP(T)  _____     _____    _____     _____     _____    _____     KP(Y)  KP(U)  KP(I)     KP(O)    KP(P)    KP(BSLH)
+            KP(ESC)   HM_A   HM_S      HM_D     HM_F      HM_G   _____     _____    _____     _____     _____    _____     HM_H   HM_J   HM_K      HM_L     HM_SEMI  KP(SQT)
+            KP(LSHFT) KP(Z)  KP(X)     KP(C)    KP(V)     KP(B)  KP(LCTRL) KP(LALT) &layer_td &layer_td KP(RALT) KP(RCTRL) KP(N)  KP(M)  KP(COMMA) KP(DOT)  KP(FSLH) KP(RSHFT)
+            MAGIC     &none  KP(GRAVE) KP(LEFT) KP(RIGHT) _____  KP(BSPC)  KP(DEL)  KP(LGUI)  KP(RGUI)  KP(RET)  KP(SPACE) _____  KP(UP) KP(DOWN)  KP(LBKT) KP(RBKT) MAGIC
             >;
         };
 
