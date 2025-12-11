@@ -382,17 +382,5 @@
             &trans &trans &trans &trans &trans _____  &trans &trans &trans &trans &trans &trans _____  &trans &trans &trans &trans &trans
             >;
         };
-
-        desktop_layer {
-            bindings = <
-            &none &none      &none      &none      &none      _____      _____ _____ _____ _____ _____     _____       _____     &none    &none &none &none        &none
-            &none KP(LG(N1)) KP(LG(N2)) KP(LG(N3)) KP(LG(N4)) KP(LG(N5)) _____ _____ _____ _____ _____     _____       &none     &none    &none &none &none        &none
-            &none KP(LG(Q))  &none      KP(LG(K))  KP(LG(A))  KP(HYP(T)) _____ _____ _____ _____ _____     _____       &none     &none    &none &none KP(HYP(P))   &none
-            &none KP(HYP(A)) KP(LG(H))  KP(LG(J))  KP(LG(L))  &none      _____ _____ _____ _____ _____     _____       &none     KP(LCTL) &none &none KP(LG(SEMI)) &none
-            &none &none      &none      KP(HYP(C)) &none      &none      &none &none &none &none KP(LG(C)) KP(LG(TAB)) KP(LG(N)) &none    &none &none &none        &none
-            &none &none      &none      &none      &none      _____      &none &none &none &none KP(LG(R)) KP(LG(D))   _____     &none    &none &none &none        &none
-            >;
-        };
-
     };
 };
