@@ -26,7 +26,7 @@
 #define L_MAGIC       4
 #define L_NO_HM_RIGHT 5
 #define L_NO_HM_LEFT  6
-#define L_DESKTOP     7
+#define L_NAV         7
 
 &lt {
     quick-tap-ms = <175>;
@@ -161,9 +161,10 @@
     #define HM_L &hmr LALT L
     #define HM_SEMI &hmr LGUI SEMI
 
-    #define T_BSPC &lt L_DESKTOP BSPC
     #define T_RET &lt L_MOUSE RET
     #define T_ESC &lt L_FUNCTION ESC
+
+    #define T_LCTL &mo L_NAV
 
     #define BT(x) &bt BT_##x
     #define KP(x) &kp x
@@ -256,7 +257,7 @@
     #define POS_R64 78
     #define POS_R65 79
 
-    combos {
+    /* combos {
         compatible = "zmk,combos";
 
         combo_function_layer {
@@ -270,7 +271,7 @@
             key-positions = <POS_TR11 POS_TR12>;
             bindings = <&mo L_MOUSE>;
         };
-    };
+    };*/
 
     keymap {
         compatible = "zmk,keymap";
@@ -308,12 +309,12 @@
             // | MAGIC | HOME| END | LEFT | RIGHT|      | BSPC  | DEL   | LALT  | | RALT  | RET   | SPACE |      |  UP   | DOWN  |  [   |   ]   | PGDN |  5+3+3+5 (64-79) l:64-71 r:72-79
 
             bindings = <
-            KP(F1)    &none  &none     &none    &none     _____  _____     _____    _____     _____     _____    _____     _____  &none  &none     &none    &none    KP(F10)
-            KP(EQUAL) KP(N1) KP(N2)    KP(N3)   KP(N4)    KP(N5) _____     _____    _____     _____     _____    _____     KP(N6) KP(N7) KP(N8)    KP(N9)   KP(N0)   KP(MINUS)
-            KP(TAB)   KP(Q)  KP(W)     KP(E)    KP(R)     KP(T)  _____     _____    _____     _____     _____    _____     KP(Y)  KP(U)  KP(I)     KP(O)    KP(P)    KP(BSLH)
-            KP(ESC)   HM_A   HM_S      HM_D     HM_F      HM_G   _____     _____    _____     _____     _____    _____     HM_H   HM_J   HM_K      HM_L     HM_SEMI  KP(SQT)
-            KP(LSHFT) KP(Z)  KP(X)     KP(C)    KP(V)     KP(B)  KP(LCTRL) KP(LALT) &layer_td &layer_td KP(RALT) KP(RCTRL) KP(N)  KP(M)  KP(COMMA) KP(DOT)  KP(FSLH) KP(RSHFT)
-            MAGIC     &none  KP(GRAVE) KP(LEFT) KP(RIGHT) _____  KP(BSPC)  KP(DEL)  KP(LGUI)  KP(RGUI)  KP(RET)  KP(SPACE) _____  KP(UP) KP(DOWN)  KP(LBKT) KP(RBKT) MAGIC
+            KP(F1)    &none  &none     &none    &none     _____  _____    _____    _____     _____     _____    _____     _____  &none  &none     &none    &none    KP(F10)
+            KP(EQUAL) KP(N1) KP(N2)    KP(N3)   KP(N4)    KP(N5) _____    _____    _____     _____     _____    _____     KP(N6) KP(N7) KP(N8)    KP(N9)   KP(N0)   KP(MINUS)
+            KP(TAB)   KP(Q)  KP(W)     KP(E)    KP(R)     KP(T)  _____    _____    _____     _____     _____    _____     KP(Y)  KP(U)  KP(I)     KP(O)    KP(P)    KP(BSLH)
+            KP(ESC)   HM_A   HM_S      HM_D     HM_F      HM_G   _____    _____    _____     _____     _____    _____     HM_H   HM_J   HM_K      HM_L     HM_SEMI  KP(SQT)
+            KP(LSHFT) KP(Z)  KP(X)     KP(C)    KP(V)     KP(B)  T_LCTL   KP(LALT) &layer_td &layer_td KP(RALT) KP(RCTRL) KP(N)  KP(M)  KP(COMMA) KP(DOT)  KP(FSLH) KP(RSHFT)
+            MAGIC     &none  KP(GRAVE) KP(LEFT) KP(RIGHT) _____  KP(BSPC) KP(DEL)  KP(LGUI)  KP(RGUI)  KP(RET)  KP(SPACE) _____  KP(UP) KP(DOWN)  KP(LBKT) KP(RBKT) MAGIC
             >;
         };
 
@@ -380,6 +381,34 @@
             &trans &trans &trans KP(D)  KP(F)  &trans _____  _____  _____  _____  _____  _____  &trans &trans &trans &trans &trans &trans
             &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans
             &trans &trans &trans &trans &trans _____  &trans &trans &trans &trans &trans &trans _____  &trans &trans &trans &trans &trans
+            >;
+        };
+
+
+        // fkeys:basic_13-24
+        #define W_LAUNCH6     KP(F15)
+        #define W_LAUNCH7     KP(F16)
+        #define W_LAUNCH8     KP(F17)
+        #define W_LAUNCH9     KP(F18)
+
+        #define W_OPEN        KP(K_EXECUTE)
+        #define W_FIND        KP(K_FIND)
+        #define W_MENUKB      KP(C_MENU)
+        #define W_CANCEL      KP(K_STOP)
+        #define W_RELOAD      KP(K_REFRESH)
+
+        #define W_BACK        KP(K_BACK)
+        #define W_CALCULATOR  KP(K_CALCULATOR)
+        #define W_FORWARD     KP(K_FORWARD)
+
+        nav_layer {
+            bindings = <
+            &none &none    &none    &none      &none     _____     _____ _____ _____ _____ _____ _____ _____    &none    &none       &none     &none     &none
+            &none &none    &none    &none      &none     &none     _____ _____ _____ _____ _____ _____ KP(F16)  KP(F17)  KP(F18)     KP(F19)   KP(F20)   KP(F21)
+            &none &none    &none    &none      &none     &none     _____ _____ _____ _____ _____ _____ KP(BSPC) KP(HOME) KP(UP)      KP(PG_UP) KP(F22)   KP(C_RED)
+            &none KP(LGUI) KP(LALT) KP(LSHIFT) KP(LCTRL) KP(HYPER) _____ _____ _____ _____ _____ _____ KP(RET)  KP(LEFT) KP(DOWN)    KP(RIGHT) KP(F23)   KP(C_GREEN)
+            &none &none    &none    &none      &none     &none     &none &none &none &none &none &none KP(DEL)  KP(END)  KP(K_CMENU) KP(PG_DN) W_FIND    KP(C_BLUE)
+            &none &none    &none    &none      &none     _____     &none &none &none &none &none &none _____    KP(INS)  W_OPEN      W_BACK    W_FORWARD KP(C_YELLOW)
             >;
         };
     };
