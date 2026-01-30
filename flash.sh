@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 set -euo pipefail
-
 # Glove80 Firmware Flash Script
 # Flashes firmware to both halves of the Glove80 keyboard in sequence (right then left)
 
@@ -118,7 +117,7 @@ find_device_by_label() {
             echo "$device"
             return 0
         fi
-    done < <(blkid 2>/dev/null)
+    done < <(sudo blkid 2>/dev/null)
 
     echo ""
     return 1
@@ -228,7 +227,7 @@ wait_for_device_removal() {
     echo -e "${CYAN}⏳ Firmware copied, waiting for ${name} half to reboot...${RESET}" >&2
 
     # Poll until device disappears from blkid
-    while blkid "$device" >/dev/null 2>&1; do
+    while sudo blkid "$device" >/dev/null 2>&1; do
         sleep 1
     done
 }
