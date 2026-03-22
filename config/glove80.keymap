@@ -166,13 +166,13 @@
 
     #define HM_A &hml LGUI A
     #define HM_S &hml LALT S
-    #define HM_D &hml LSHFT D
-    #define HM_F &hml LCTRL F
+    #define HM_D &hml LCTRL F
+    #define HM_F &hml LSHFT D
     #define HM_G &hml HYPER G
 
     #define HM_H &hmr HYPER H
-    #define HM_J &hmr LCTRL J
-    #define HM_K &hmr LSHFT K
+    #define HM_J &hmr LSHFT K
+    #define HM_K &hmr LCTRL J
     #define HM_L &hmr LALT L
     #define HM_SEMI &hmr LGUI SEMI
 
