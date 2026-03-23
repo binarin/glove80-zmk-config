@@ -21,7 +21,7 @@
 // layers
 #define L_DEFAULT     0
 #define L_LOWER       1
-#define L_FUNCTION    2
+#define L_FUN    2
 #define L_MOUSE       3
 #define L_MAGIC       4
 #define L_NO_HM_RIGHT 5
@@ -166,20 +166,21 @@
 
     #define HM_A &hml LGUI A
     #define HM_S &hml LALT S
-    #define HM_D &hml LCTRL F
-    #define HM_F &hml LSHFT D
+    #define HM_D &hml LCTRL D
+    #define HM_F &hml LSHFT F
     #define HM_G &hml HYPER G
 
     #define HM_H &hmr HYPER H
-    #define HM_J &hmr LSHFT K
-    #define HM_K &hmr LCTRL J
+    #define HM_J &hmr LSHFT J
+    #define HM_K &hmr LCTRL K
     #define HM_L &hmr LALT L
     #define HM_SEMI &hmr LGUI SEMI
 
     #define T_RET &lt L_MOUSE RET
-    #define T_ESC &lt L_FUNCTION ESC
+    #define T_ESC &lt L_FUN ESC
 
     #define T_LCTL &mo L_NAV
+    #define MO(x) &mo x
 
     #define BT(x) &bt BT_##x
     #define KP(x) &kp x
@@ -278,7 +279,7 @@
         combo_function_layer {
             timeout-ms = <50>;
             key-positions = <POS_TL13 POS_TL23>;
-            bindings = <&mo L_FUNCTION>;
+            bindings = <&mo L_FUN>;
         };
 
         combo_mouse_layer {
@@ -324,34 +325,34 @@
             // | MAGIC | HOME| END | LEFT | RIGHT|      | BSPC  | DEL   | LALT  | | RALT  | RET   | SPACE |      |  UP   | DOWN  |  [   |   ]   | PGDN |  5+3+3+5 (64-79) l:64-71 r:72-79
 
             bindings = <
-            KP(F1)    &none  &none     &none    &none     _____  _____    _____    _____      _____     _____    _____     _____  &none  &none     &none    &none    KP(F10)
-            KP(EQUAL) KP(N1) KP(N2)    KP(N3)   KP(N4)    KP(N5) _____    _____    _____      _____     _____    _____     KP(N6) KP(N7) KP(N8)    KP(N9)   KP(N0)   KP(MINUS)
-            KP(TAB)   KP(Q)  KP(W)     KP(E)    KP(R)     KP(T)  _____    _____    _____      _____     _____    _____     KP(Y)  KP(U)  KP(I)     KP(O)    KP(P)    KP(BSLH)
-            KP(ESC)   HM_A   HM_S      HM_D     HM_F      HM_G   _____    _____    _____      _____     _____    _____     HM_H   HM_J   HM_K      HM_L     HM_SEMI  KP(SQT)
-            KP(LSHFT) KP(Z)  KP(X)     KP(C)    KP(V)     KP(B)  T_LCTL   KP(LALT) &layer_td  &layer_td KP(RALT) KP(RCTRL) KP(N)  KP(M)  KP(COMMA) KP(DOT)  KP(FSLH) KP(RSHFT)
-            MAGIC     &none  KP(GRAVE) KP(LEFT) KP(RIGHT) _____  KP(BSPC) KP(DEL)  &gaming_td KP(RGUI)  KP(RET)  KP(SPACE) _____  KP(UP) KP(DOWN)  KP(LBKT) KP(RBKT) MAGIC
+            KP(F1)    &none  &none     &none  &none  _____  _____    _____     _____      _____     _____   _____     _____  &none  &none     &none    &none    KP(F10)
+            KP(EQUAL) KP(N1) KP(N2)    KP(N3) KP(N4) KP(N5) _____    _____     _____      _____     _____   _____     KP(N6) KP(N7) KP(N8)    KP(N9)   KP(N0)   KP(MINUS)
+            KP(TAB)   KP(Q)  KP(W)     KP(E)  KP(R)  KP(T)  _____    _____     _____      _____     _____   _____     KP(Y)  KP(U)  KP(I)     KP(O)    KP(P)    KP(BSLH)
+            KP(ESC)   HM_A   HM_S      HM_D   HM_F   HM_G   _____    _____     _____      _____     _____   _____     HM_H   HM_J   HM_K      HM_L     HM_SEMI  KP(SQT)
+            &none     KP(Z)  KP(X)     KP(C)  KP(V)  KP(B)  T_LCTL   MO(L_FUN) &layer_td  &layer_td &none   &none     KP(N)  KP(M)  KP(COMMA) KP(DOT)  KP(FSLH) &none
+            MAGIC     &none  KP(GRAVE) &none  &none  _____  KP(BSPC) KP(DEL)   &gaming_td &none     KP(RET) KP(SPACE) _____  &none  KP(LBKT)  KP(RBKT) &none    MAGIC
             >;
         };
 
         lower_layer {
             bindings = <
-            KP(C_BRI_DN) KP(C_BRI_UP) KP(C_PREV) KP(C_NEXT) KP(C_PP)  _____     _____  _____  _____  _____  _____  _____  _____     KP(C_MUTE) KP(C_VOL_DN) KP(C_VOL_UP)  &none           KP(PAUSE_BREAK)
-            &trans       &none        &none      &none      &none     &none     _____  _____  _____  _____  _____  _____  KP(LPAR)  KP(KP_NUM) KP(KP_EQUAL) KP(KP_DIVIDE) KP(KP_MULTIPLY) KP(PSCRN)
-            &trans       &none        &none      KP(UP)     &none     KP(END)   _____  _____  _____  _____  _____  _____  KP(RPAR)  KP(KP_N7)  KP(KP_N8)    KP(KP_N9)     KP(KP_MINUS)    KP(SLCK)
-            &trans       &none        KP(LEFT)   KP(DOWN)   KP(RIGHT) KP(PG_UP) _____  _____  _____  _____  _____  _____  KP(PRCNT) KP(KP_N4)  KP(KP_N5)    KP(KP_N6)     KP(KP_PLUS)     &none
-            &trans       KP(K_CMENU)  &none      KP(F11)    KP(F12)   KP(PG_DN) &trans &trans TO_DEF TO_DEF &trans &trans KP(COMMA) KP(KP_N1)  KP(KP_N2)    KP(KP_N3)     KP(KP_ENTER)    &trans
-            &trans       KP(CAPS)     KP(INS)    KP(F11)    KP(F12)   _____     &trans &trans &trans &trans &trans &trans _____     KP(KP_N0)  KP(KP_N0)    KP(KP_DOT)    KP(KP_ENTER)    &trans
+            KP(C_BRI_DN) KP(C_BRI_UP) KP(C_PREV) KP(C_NEXT) KP(C_PP) _____ _____  _____  _____  _____  _____  _____  _____     KP(C_MUTE) KP(C_VOL_DN) KP(C_VOL_UP)  &none           KP(PAUSE_BREAK)
+            &trans       &none        &none      &none      &none    &none _____  _____  _____  _____  _____  _____  KP(LPAR)  KP(KP_NUM) KP(KP_EQUAL) KP(KP_DIVIDE) KP(KP_MULTIPLY) KP(PSCRN)
+            &trans       &none        &none      &none      &none    &none _____  _____  _____  _____  _____  _____  KP(RPAR)  KP(KP_N7)  KP(KP_N8)    KP(KP_N9)     KP(KP_MINUS)    KP(SLCK)
+            &trans       &none        &none      &none      &none    &none _____  _____  _____  _____  _____  _____  KP(PRCNT) KP(KP_N4)  KP(KP_N5)    KP(KP_N6)     KP(KP_PLUS)     &none
+            &trans       &none        &none      &none      &none    &none &trans &trans TO_DEF TO_DEF &trans &trans KP(COMMA) KP(KP_N1)  KP(KP_N2)    KP(KP_N3)     KP(KP_ENTER)    &trans
+            &trans       &none        &none      &none      &none    _____ &trans &trans &trans &trans &trans &trans _____     KP(KP_N0)  KP(KP_N0)    KP(KP_DOT)    KP(KP_ENTER)    &trans
             >;
         };
 
         function_layer {
             bindings = <
-            &none &none    &none    &none      &none     _____     _____ _____ _____ _____ _____ _____ _____ &none  &none  &none  &none   &none
-            &none &none    &none    &none      &none     &none     _____ _____ _____ _____ _____ _____ &none &none  &none  &none  &none   &none
-            &none &none    &none    &none      &none     &none     _____ _____ _____ _____ _____ _____ &none KP(F7) KP(F8) KP(F9) KP(F10) KP(F13)
-            &none KP(LGUI) KP(LALT) KP(LSHIFT) KP(LCTRL) KP(HYPER) _____ _____ _____ _____ _____ _____ &none KP(F4) KP(F5) KP(F6) KP(F11) KP(F14)
-            &none &none    &none    &none      &none     &none     &none &none &none &none &none &none &none KP(F1) KP(F2) KP(F3) KP(F12) KP(F15)
-            &none &none    &none    &none      &none     _____     &none &none &none &none &none &none _____ &none  &none  &none  &none   &none
+            &none &none    &none    &none     &none     _____     _____ _____ _____ _____ _____ _____ _____ &none  &none  &none  &none   &none
+            &none &none    &none    &none     &none     &none     _____ _____ _____ _____ _____ _____ &none &none  &none  &none  &none   &none
+            &none &none    &none    &none     &none     &none     _____ _____ _____ _____ _____ _____ &none KP(F7) KP(F8) KP(F9) KP(F10) KP(F13)
+            &none KP(LGUI) KP(LALT) KP(LCTRL) KP(LSHFT) KP(HYPER) _____ _____ _____ _____ _____ _____ &none KP(F4) KP(F5) KP(F6) KP(F11) KP(F14)
+            &none &none    &none    &none     &none     &none     &none &none &none &none &none &none &none KP(F1) KP(F2) KP(F3) KP(F12) KP(F15)
+            &none &none    &none    &none     &none     _____     &none &none &none &none &none &none _____ &none  &none  &none  &none   &none
             >;
         };
 
@@ -417,12 +418,12 @@
 
         nav_layer {
             bindings = <
-            &none &none    &none    &none      &none     _____     _____ _____ _____ _____ _____ _____ _____    &none    &none       &none     &none     &none
-            &none &none    &none    &none      &none     &none     _____ _____ _____ _____ _____ _____ KP(F16)  KP(F17)  KP(F18)     KP(F19)   KP(F20)   KP(F21)
-            &none &none    &none    &none      &none     &none     _____ _____ _____ _____ _____ _____ KP(BSPC) KP(HOME) KP(UP)      KP(PG_UP) KP(F22)   KP(C_RED)
-            &none KP(LGUI) KP(LALT) KP(LSHIFT) KP(LCTRL) KP(HYPER) _____ _____ _____ _____ _____ _____ KP(RET)  KP(LEFT) KP(DOWN)    KP(RIGHT) KP(F23)   KP(C_GREEN)
-            &none &none    &none    &none      &none     &none     &none &none &none &none &none &none KP(DEL)  KP(END)  KP(K_CMENU) KP(PG_DN) W_FIND    KP(C_BLUE)
-            &none &none    &none    &none      &none     _____     &none &none &none &none &none &none _____    KP(INS)  W_OPEN      W_BACK    W_FORWARD KP(C_YELLOW)
+            &none &none    &none    &none     &none      _____     _____ _____ _____ _____ _____ _____ _____    &none    &none       &none     &none     &none
+            &none &none    &none    &none     &none      &none     _____ _____ _____ _____ _____ _____ KP(F16)  KP(F17)  KP(F18)     KP(F19)   KP(F20)   KP(F21)
+            &none &none    &none    &none     &none      &none     _____ _____ _____ _____ _____ _____ KP(BSPC) KP(HOME) KP(UP)      KP(PG_UP) KP(F22)   KP(C_RED)
+            &none KP(LGUI) KP(LALT) KP(LCTRL) KP(LSHIFT) KP(HYPER) _____ _____ _____ _____ _____ _____ KP(RET)  KP(LEFT) KP(DOWN)    KP(RIGHT) KP(F23)   KP(C_GREEN)
+            &none &none    &none    &none     &none      &none     &none &none &none &none &none &none KP(DEL)  KP(END)  KP(K_CMENU) KP(PG_DN) W_FIND    KP(C_BLUE)
+            &none &none    &none    &none     &none      _____     &none &none &none &none &none &none _____    KP(INS)  W_OPEN      W_BACK    W_FORWARD KP(C_YELLOW)
             >;
         };
 
