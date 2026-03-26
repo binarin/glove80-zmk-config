@@ -336,12 +336,12 @@
 
         lower_layer {
             bindings = <
-            KP(C_BRI_DN) KP(C_BRI_UP) KP(C_PREV) KP(C_NEXT) KP(C_PP) _____ _____  _____  _____  _____  _____  _____  _____     KP(C_MUTE) KP(C_VOL_DN) KP(C_VOL_UP)  &none           KP(PAUSE_BREAK)
-            &trans       &none        &none      &none      &none    &none _____  _____  _____  _____  _____  _____  KP(LPAR)  KP(KP_NUM) KP(KP_EQUAL) KP(KP_DIVIDE) KP(KP_MULTIPLY) KP(PSCRN)
-            &trans       &none        &none      &none      &none    &none _____  _____  _____  _____  _____  _____  KP(RPAR)  KP(KP_N7)  KP(KP_N8)    KP(KP_N9)     KP(KP_MINUS)    KP(SLCK)
-            &trans       &none        &none      &none      &none    &none _____  _____  _____  _____  _____  _____  KP(PRCNT) KP(KP_N4)  KP(KP_N5)    KP(KP_N6)     KP(KP_PLUS)     &none
-            &trans       &none        &none      &none      &none    &none &trans &trans TO_DEF TO_DEF &trans &trans KP(COMMA) KP(KP_N1)  KP(KP_N2)    KP(KP_N3)     KP(KP_ENTER)    &trans
-            &trans       &none        &none      &none      &none    _____ &trans &trans &trans &trans &trans &trans _____     KP(KP_N0)  KP(KP_N0)    KP(KP_DOT)    KP(KP_ENTER)    &trans
+            KP(C_BRI_DN) KP(C_BRI_UP) KP(C_PREV) KP(C_NEXT) KP(C_PP)  _____     _____  _____  _____  _____  _____  _____  _____     KP(C_MUTE) KP(C_VOL_DN) KP(C_VOL_UP)  &none           KP(PAUSE_BREAK)
+            &trans       &none        &none      &none      &none     &none     _____  _____  _____  _____  _____  _____  KP(LPAR)  KP(KP_NUM) KP(KP_EQUAL) KP(KP_DIVIDE) KP(KP_MULTIPLY) KP(PSCRN)
+            &trans       &none        &none      &none      &none     &none     _____  _____  _____  _____  _____  _____  KP(RPAR)  KP(KP_N7)  KP(KP_N8)    KP(KP_N9)     KP(KP_MINUS)    KP(SLCK)
+            &trans       KP(LGUI)     KP(LALT)   KP(LCTRL)  KP(LSHFT) KP(HYPER) _____  _____  _____  _____  _____  _____  KP(PRCNT) KP(KP_N4)  KP(KP_N5)    KP(KP_N6)     KP(KP_PLUS)     &none
+            &trans       &none        &none      &none      &none     &none     &trans &trans TO_DEF TO_DEF &trans &trans KP(COMMA) KP(KP_N1)  KP(KP_N2)    KP(KP_N3)     KP(KP_ENTER)    &trans
+            &trans       &none        &none      &none      &none     _____     &trans &trans &trans &trans &trans &trans _____     KP(KP_N0)  KP(KP_N0)    KP(KP_DOT)    KP(KP_ENTER)    &trans
             >;
         };
 
