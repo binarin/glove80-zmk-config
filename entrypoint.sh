@@ -7,7 +7,9 @@ cd /src
 git fetch origin
 git checkout -q --detach "$BRANCH"
 
-echo 'Building Glove80 firmware' >&2
 cd /config
-nix-build ./config --arg firmware 'import /src/default.nix {}' -j2 -o /tmp/combined --show-trace
-install -o "$UID" -g "$GID" /tmp/combined/glove80.uf2 ./glove80.uf2
+for keyboard in glove80 go60; do
+    echo "Building $keyboard firmware" >&2
+    nix-build ./config --arg firmware 'import /src/default.nix {}' --arg pkgs 'import /src/nix/pinned-nixpkgs.nix {}' -A "$keyboard" -j2 -o "/tmp/$keyboard" --show-trace
+    install -o "$UID" -g "$GID" "/tmp/$keyboard/$keyboard.uf2" "./$keyboard.uf2"
+done
