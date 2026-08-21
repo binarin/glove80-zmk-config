@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
-# Glove80 Firmware Flash Script
-# Flashes firmware to both halves of the Glove80 keyboard in sequence (right then left)
+# Keyboard Firmware Flash Script
+# Builds firmware with ./build.sh (unless skipped) and flashes both halves
+# in sequence (right then left). Supports Glove80 and GO60.
 
 #############################################
 # Usage Function
@@ -9,21 +10,24 @@ set -euo pipefail
 
 show_usage() {
     cat << EOF
-Usage: $0 [OPTIONS]
+Usage: $0 <keyboard> [OPTIONS]
 
-Flash firmware to Glove80 keyboard halves.
+Flash firmware to both halves of a keyboard in sequence (right then left).
+
+ARGUMENTS:
+    keyboard    (required) Keyboard to flash: glove80 or go60
 
 OPTIONS:
     --right     Flash only the right half
     --left      Flash only the left half
     --both      Flash both halves (default)
+    --no-build  Skip building; reuse the existing .uf2 if present
     -h, --help  Show this help message
 
 EXAMPLES:
-    $0              # Flash both halves (right, then left)
-    $0 --right      # Flash only the right half
-    $0 --left       # Flash only the left half
-    $0 --both       # Flash both halves explicitly
+    $0 glove80              # Build, then flash both halves (right, then left)
+    $0 go60 --left          # Build, then flash only the left half
+    $0 go60 --no-build      # Skip build, flash both halves with existing go60.uf2
 
 EOF
     exit 0
@@ -33,16 +37,17 @@ EOF
 # Configuration & Setup
 #############################################
 
-FIRMWARE_FILE="result/glove80.uf2"
-DEVICE_LABELS=("GLV80RHBOOT" "GLV80LHBOOT")
+KEYBOARD=""
+FIRMWARE_FILE=""
+DEVICE_LABELS=()
 DEVICE_NAMES=("RIGHT" "LEFT")
-BOOTLOADER_KEYS=("Magic+' (on both halves)" "Magic+Esc (on left half)")
+BOOTLOADER_KEYS=()
+SKIP_BUILD=false
+# Alternate label to accept for the left half (known label bug workaround)
+LEFT_ALT_LABEL=""
+
 POLL_INTERVAL=2
 TIMEOUT=60
-
-# Default: flash both halves
-FLASH_RIGHT=true
-FLASH_LEFT=true
 
 # ANSI Color Codes
 RED='\033[0;31m'
@@ -60,43 +65,83 @@ if command -v figlet >/dev/null 2>&1; then
     HAS_FIGLET=true
 fi
 
+configure_keyboard() {
+    case "$1" in
+        glove80)
+            KEYBOARD="glove80"
+            FIRMWARE_FILE="glove80.uf2"
+            DEVICE_LABELS=("GLV80RHBOOT" "GLV80LHBOOT")
+            BOOTLOADER_KEYS=("Magic+' (on both halves)" "Magic+Esc (on left half)")
+            # Glove80 left half is known to sometimes report the right label
+            LEFT_ALT_LABEL="GLV80RHBOOT"
+            ;;
+        go60)
+            KEYBOARD="go60"
+            FIRMWARE_FILE="go60.uf2"
+            DEVICE_LABELS=("GO60RHBOOT" "GO60LHBOOT")
+            BOOTLOADER_KEYS=("Magic layer, bootloader key (top outer key of each half)" "Magic layer, bootloader key (top outer key of each half)")
+            LEFT_ALT_LABEL=""
+            ;;
+        *)
+            echo -e "${RED}${BOLD}Error: Unknown keyboard: $1${RESET}" >&2
+            echo "Supported keyboards: glove80, go60" >&2
+            exit 1
+            ;;
+    esac
+}
+
 #############################################
 # Argument Parsing
 #############################################
 
+# Default: flash both halves
+FLASH_RIGHT=true
+FLASH_LEFT=true
+SKIP_BUILD=false
+
+# First non-option argument is the keyboard name
 while [[ $# -gt 0 ]]; do
     case $1 in
         --right)
             FLASH_RIGHT=true
             FLASH_LEFT=false
-            shift
             ;;
         --left)
             FLASH_RIGHT=false
             FLASH_LEFT=true
-            shift
             ;;
         --both)
             FLASH_RIGHT=true
             FLASH_LEFT=true
-            shift
+            ;;
+        --no-build)
+            SKIP_BUILD=true
             ;;
         -h|--help)
             show_usage
             ;;
-        *)
+        -*)
             echo -e "${RED}${BOLD}Error: Unknown option: $1${RESET}" >&2
             echo "Run '$0 --help' for usage information." >&2
             exit 1
             ;;
+        *)
+            if [ -z "$KEYBOARD" ]; then
+                configure_keyboard "$1"
+            else
+                echo -e "${RED}${BOLD}Error: Unexpected argument: $1${RESET}" >&2
+                exit 1
+            fi
+            ;;
     esac
+    shift
 done
 
-#############################################
-# Signal Handling
-#############################################
-
-trap 'echo -e "\n${RED}${BOLD}✗ Flashing interrupted.${RESET}"; exit 130' INT TERM
+if [ -z "$KEYBOARD" ]; then
+    echo -e "${RED}${BOLD}Error: keyboard argument is required (glove80 or go60).${RESET}" >&2
+    echo "Run '$0 --help' for usage information." >&2
+    exit 1
+fi
 
 #############################################
 # Helper Functions
@@ -136,30 +181,19 @@ wait_for_device() {
     echo -e "${YELLOW}⏳ Waiting for ${name} half (${expected_label})...${RESET}" >&2
 
     while [ $elapsed -lt $TIMEOUT ]; do
-        # For left half, check both labels (workaround for label bug)
-        if [ "$name" = "LEFT" ]; then
-            # Try expected label first
-            device=$(find_device_by_label "$expected_label")
-            if [ -n "$device" ]; then
-                found_label="$expected_label"
-                echo "${device}|${found_label}"
-                return 0
-            fi
-            # Try alternate label
-            device=$(find_device_by_label "GLV80RHBOOT")
-            if [ -n "$device" ]; then
-                found_label="GLV80RHBOOT"
-                echo "${device}|${found_label}"
-                return 0
-            fi
-        else
-            device=$(find_device_by_label "$expected_label")
-            if [ -n "$device" ]; then
-                found_label="$expected_label"
-                echo "${device}|${found_label}"
-                return 0
-            fi
+        # For left half, check alternate label too (workaround for label bug)
+        local -a labels=("$expected_label")
+        if [ "$name" = "LEFT" ] && [ -n "$LEFT_ALT_LABEL" ] && [ "$LEFT_ALT_LABEL" != "$expected_label" ]; then
+            labels+=("$LEFT_ALT_LABEL")
         fi
+
+        for label in "${labels[@]}"; do
+            device=$(find_device_by_label "$label")
+            if [ -n "$device" ]; then
+                echo "${device}|${label}"
+                return 0
+            fi
+        done
 
         sleep $POLL_INTERVAL
         elapsed=$((elapsed + POLL_INTERVAL))
@@ -233,30 +267,50 @@ wait_for_device_removal() {
 }
 
 #############################################
-# Main Script
+# Signal Handling
+#############################################
+
+trap 'echo -e "\n${RED}${BOLD}✗ Flashing interrupted.${RESET}"; exit 130' INT TERM
+
+#############################################
+# Build
 #############################################
 
 # Display banner
 if [ "$HAS_FIGLET" = true ]; then
     echo -e "${MAGENTA}${BOLD}"
-    figlet -f standard "GLOVE80 FLASH"
+    figlet -f standard "${KEYBOARD} FLASH"
     echo -e "${RESET}"
 else
     echo -e "${MAGENTA}${BOLD}==================================${RESET}"
-    echo -e "${MAGENTA}${BOLD}    GLOVE80 FIRMWARE FLASH${RESET}"
+    echo -e "${MAGENTA}${BOLD}    ${KEYBOARD} FIRMWARE FLASH${RESET}"
     echo -e "${MAGENTA}${BOLD}==================================${RESET}"
     echo ""
 fi
 
-# Check firmware file exists
-if [ ! -f "$FIRMWARE_FILE" ]; then
-    echo -e "${RED}${BOLD}✗ Error: Firmware file not found at ${FIRMWARE_FILE}${RESET}" >&2
-    exit 1
+# Build (or reuse existing firmware)
+if [ "$SKIP_BUILD" = true ]; then
+    if [ ! -f "$FIRMWARE_FILE" ]; then
+        echo -e "${RED}${BOLD}✗ --no-build given but ${FIRMWARE_FILE} not found.${RESET}" >&2
+        exit 1
+    fi
+    echo -e "${BLUE}Skipping build, using existing ${FIRMWARE_FILE}${RESET}"
+else
+    echo -e "${BLUE}Building firmware (./build.sh)...${RESET}"
+    ./build.sh
+    if [ ! -f "$FIRMWARE_FILE" ]; then
+        echo -e "${RED}${BOLD}✗ Build finished but ${FIRMWARE_FILE} not found.${RESET}" >&2
+        exit 1
+    fi
 fi
 
 echo -e "${BLUE}Firmware: ${FIRMWARE_FILE}${RESET}"
 echo -e "${BLUE}Size: $(stat -c%s "$FIRMWARE_FILE" | numfmt --to=iec-i)B${RESET}"
 echo ""
+
+#############################################
+# Main Flash Loop
+#############################################
 
 # Flash each half in order (right, then left)
 for i in 0 1; do
@@ -291,9 +345,9 @@ for i in 0 1; do
     device="${result%|*}"
     found_label="${result#*|}"
 
-    # Warn if left half shows wrong label
-    if [ "$name" = "LEFT" ] && [ "$found_label" = "GLV80RHBOOT" ]; then
-        echo -e "${YELLOW}⚠ Warning: Left half detected with RIGHT label (GLV80RHBOOT). This is a known issue.${RESET}" >&2
+    # Warn if left half shows alternate label
+    if [ "$name" = "LEFT" ] && [ "$found_label" != "$expected_label" ]; then
+        echo -e "${YELLOW}⚠ Warning: Left half detected with label ${found_label} instead of ${expected_label}. This is a known issue.${RESET}" >&2
     fi
 
     echo -e "${CYAN}✓ Found ${name} half at ${device}${RESET}" >&2
