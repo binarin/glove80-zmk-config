@@ -13,41 +13,8 @@
 
 #include "../shared/common.dtsi"
 
-#define HYPER LC(LS(LG(LALT)))
-#define HYP(x) LC(LS(LG(LA(x))))
-
-// layers
-#define L_DEFAULT     0
-#define L_LOWER       1
-#define L_FUN    2
-#define L_MOUSE       3
-#define L_MAGIC       4
-#define L_NO_HM_RIGHT 5
-#define L_NO_HM_LEFT  6
-#define L_NAV         7
-#define L_GAMING      8
-#define TOG(LAYER) &tog LAYER
-
-&lt {
-    quick-tap-ms = <175>;
-};
-
-&caps_word {
-    continue-list = <UNDERSCORE>;
-};
-
 / {
     behaviors {
-        // For the "layer" key, it'd nice to be able to use it as either a shift or a toggle.
-        // Configure it as a tap dance, so the first tap (or hold) is a &mo and the second tap is a &to
-        layer_td: tap_dance_0 {
-            compatible = "zmk,behavior-tap-dance";
-            label = "LAYER_TAP_DANCE";
-            #binding-cells = <0>;
-            tapping-term-ms = <200>;
-            bindings = <&mo L_LOWER>, <&to L_LOWER>;
-        };
-
         gaming_td: gaming_td {
             compatible = "zmk,behavior-tap-dance";
             label = "GAMING_CAPS_TAP_DANCE";
@@ -56,15 +23,6 @@
             bindings = <&caps_word>, <&tog L_GAMING>;
         };
 
-
-        magic: magic_hold_tap {
-            compatible = "zmk,behavior-hold-tap";
-            label = "MAGIC_HOLD_TAP";
-            #binding-cells = <2>;
-            flavor = "tap-preferred";
-            tapping-term-ms = <200>;
-            bindings = <&mo>, <&rgb_ug_status_macro>;
-        };
 
         hml: home_row_mod_left {
             compatible = "zmk,behavior-hold-tap";
@@ -96,99 +54,6 @@
             mods = <(MOD_RCTL|MOD_LCTL)>;
         };
     };
-
-    macros {
-        kp_no_hm_left: kp_no_hm_left {
-            compatible = "zmk,behavior-macro-one-param";
-            wait-ms = <0>;
-            tap-ms = <0>;
-            #binding-cells = <1>;
-            bindings
-                = <&macro_press &mo L_NO_HM_LEFT>
-                , <&macro_param_1to1>
-                , <&macro_press &kp MACRO_PLACEHOLDER>
-                , <&macro_pause_for_release>
-                , <&macro_param_1to1>
-                , <&macro_release &kp MACRO_PLACEHOLDER>
-                , <&macro_release &mo L_NO_HM_LEFT>
-                ;
-        };
-
-        rgb_ug_status_macro: rgb_ug_status_macro_0 {
-            label = "RGB_UG_STATUS";
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            bindings
-                = <&rgb_ug RGB_STATUS>;
-        };
-
-        bt_0: bt_profile_macro_0 {
-            label = "BT_0";
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            bindings
-                = <&out OUT_BLE>,
-                  <&bt BT_SEL 0>;
-        };
-
-        bt_1: bt_profile_macro_1 {
-            label = "BT_1";
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            bindings
-                = <&out OUT_BLE>,
-                  <&bt BT_SEL 1>;
-        };
-
-        bt_2: bt_profile_macro_2 {
-            label = "BT_2";
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            bindings
-                = <&out OUT_BLE>,
-                  <&bt BT_SEL 2>;
-        };
-
-        bt_3: bt_profile_macro_3 {
-            label = "BT_3";
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            bindings
-                = <&out OUT_BLE>,
-                  <&bt BT_SEL 3>;
-        };
-    };
-
-    // no-op to make it easy to align bindings on space
-    #define _____
-
-    #define HM_A &hml LGUI A
-    #define HM_S &hml LALT S
-    #define HM_D &hml LCTRL D
-    #define HM_F &hml LSHFT F
-    #define HM_G &hml HYPER G
-
-    #define HM_H &hmr HYPER H
-    #define HM_J &hmr LSHFT J
-    #define HM_K &hmr LCTRL K
-    #define HM_L &hmr LALT L
-    #define HM_SEMI &hmr LGUI SEMI
-
-    #define T_RET &lt L_MOUSE RET
-    #define T_ESC &lt L_FUN ESC
-
-    #define T_LCTL &mo L_NAV
-    #define MO(x) &mo x
-
-    #define BT(x) &bt BT_##x
-    #define KP(x) &kp x
-    #define MAGIC &magic L_MAGIC 0
-    #define MKP(x) &mkp x
-    #define MMV(x) &mmv x
-    #define MSC(x) &msc x
-    #define RGB_UG(x) &rgb_ug x
-    #define TO_DEF &to L_DEFAULT
-    #define nOUT(x) &out OUT_##x
 
     #define POS_L11 0
     #define POS_L12 1
@@ -323,56 +188,12 @@
             // | MAGIC | HOME| END | LEFT | RIGHT|      | BSPC  | DEL   | LALT  | | RALT  | RET   | SPACE |      |  UP   | DOWN  |  [   |   ]   | PGDN |  5+3+3+5 (64-79) l:64-71 r:72-79
 
             bindings = <
-            KP(F1)    &none  &none     &none  &none  _____  _____    _____     _____      _____     _____   _____     _____  &none  &none     &none    &none    KP(F10)
-            KP(EQUAL) KP(N1) KP(N2)    KP(N3) KP(N4) KP(N5) _____    _____     _____      _____     _____   _____     KP(N6) KP(N7) KP(N8)    KP(N9)   KP(N0)   KP(MINUS)
-            KP(TAB)   KP(Q)  KP(W)     KP(E)  KP(R)  KP(T)  _____    _____     _____      _____     _____   _____     KP(Y)  KP(U)  KP(I)     KP(O)    KP(P)    KP(BSLH)
-            KP(ESC)   HM_A   HM_S      HM_D   HM_F   HM_G   _____    _____     _____      _____     _____   _____     HM_H   HM_J   HM_K      HM_L     HM_SEMI  KP(SQT)
-            &none     KP(Z)  KP(X)     KP(C)  KP(V)  KP(B)  T_LCTL   MO(L_FUN) &layer_td  &layer_td &none   &none     KP(N)  KP(M)  KP(COMMA) KP(DOT)  KP(FSLH) &none
-            MAGIC     &none  KP(GRAVE) &none  &none  _____  KP(BSPC) KP(DEL)   &gaming_td &none     KP(RET) KP(SPACE) _____  &none  KP(LBKT)  KP(RBKT) &none    MAGIC
-            >;
-        };
-
-        lower_layer {
-            bindings = <
-            KP(C_BRI_DN) KP(C_BRI_UP) KP(C_PREV) KP(C_NEXT) KP(C_PP)  _____     _____  _____  _____  _____  _____  _____  _____     KP(C_MUTE) KP(C_VOL_DN) KP(C_VOL_UP)  &none           KP(PAUSE_BREAK)
-            &trans       &none        &none      &none      &none     &none     _____  _____  _____  _____  _____  _____  KP(LPAR)  KP(KP_NUM) KP(KP_EQUAL) KP(KP_DIVIDE) KP(KP_MULTIPLY) KP(PSCRN)
-            &trans       &none        &none      &none      &none     &none     _____  _____  _____  _____  _____  _____  KP(RPAR)  KP(KP_N7)  KP(KP_N8)    KP(KP_N9)     KP(KP_MINUS)    KP(SLCK)
-            &trans       KP(LGUI)     KP(LALT)   KP(LCTRL)  KP(LSHFT) KP(HYPER) _____  _____  _____  _____  _____  _____  KP(PRCNT) KP(KP_N4)  KP(KP_N5)    KP(KP_N6)     KP(KP_PLUS)     &none
-            &trans       &none        &none      &none      &none     &none     &trans &trans TO_DEF TO_DEF &trans &trans KP(COMMA) KP(KP_N1)  KP(KP_N2)    KP(KP_N3)     KP(KP_ENTER)    &trans
-            &trans       &none        &none      &none      &none     _____     &trans &trans &trans &trans &trans &trans _____     KP(KP_N0)  KP(KP_N0)    KP(KP_DOT)    KP(KP_ENTER)    &trans
-            >;
-        };
-
-        function_layer {
-            bindings = <
-            &none &none    &none    &none     &none     _____     _____ _____ _____ _____ _____ _____ _____ &none  &none  &none  &none   &none
-            &none &none    &none    &none     &none     &none     _____ _____ _____ _____ _____ _____ &none &none  &none  &none  &none   &none
-            &none &none    &none    &none     &none     &none     _____ _____ _____ _____ _____ _____ &none KP(F7) KP(F8) KP(F9) KP(F10) KP(F13)
-            &none KP(LGUI) KP(LALT) KP(LCTRL) KP(LSHFT) KP(HYPER) _____ _____ _____ _____ _____ _____ &none KP(F4) KP(F5) KP(F6) KP(F11) KP(F14)
-            &none &none    &none    &none     &none     &none     &none &none &none &none &none &none &none KP(F1) KP(F2) KP(F3) KP(F12) KP(F15)
-            &none &none    &none    &none     &none     _____     &none &none &none &none &none &none _____ &none  &none  &none  &none   &none
-            >;
-        };
-
-        mouse_layer {
-            bindings = <
-            &none &none     &none          KP(HOME)       &none           _____      _____     _____     _____    _____ _____ _____ _____ &none    &none      &none    &none    &none
-            &none &none     KP(K_BACK)     MSC(SCRL_UP)   KP(K_FORWARD)   KP(HYP(P)) _____     _____     _____    _____ _____ _____ &none &none    &none      &none    &none    &none
-            &none KP(PG_UP) MSC(SCRL_LEFT) MMV(MOVE_UP)   MSC(SCRL_RIGHT) KP(LC(X))  _____     _____     _____    _____ _____ _____ &none &none    &none      &none    &none    &none
-            &none KP(PG_DN) MMV(MOVE_LEFT) MMV(MOVE_DOWN) MMV(MOVE_RIGHT) KP(LC(C))  _____     _____     _____    _____ _____ _____ &none KP(RCTL) KP(RSHIFT) KP(RALT) KP(RGUI) &none
-            &none &none     &none          MSC(SCRL_DOWN) &none           KP(LC(V))  MKP(MCLK) &none     MKP(MB4) &none &none &none &none &none    &none      &none    &none    &none
-            &none &none     &none          KP(END)        &none           _____      MKP(LCLK) MKP(RCLK) MKP(MB5) &none &none &none _____ &none    &none      &none    &none    &none
-            >;
-        };
-
-        magic_layer {
-            bindings = <
-            BT(CLR)     &none           &none           &none           &none           _____           _____ _____ _____     _____ _____ _____ _____ &none &none &none &none BT(CLR_ALL)
-            &none       &none           &none           &none           &none           &none           _____ _____ _____     _____ _____ _____ &none &none &none &none &none &none
-            &none       RGB_UG(RGB_SPI) RGB_UG(RGB_SAI) RGB_UG(RGB_HUI) RGB_UG(RGB_BRI) RGB_UG(RGB_TOG) _____ _____ _____     _____ _____ _____ &none &none &none &none &none &none
-            &bootloader RGB_UG(RGB_SPD) RGB_UG(RGB_SAD) RGB_UG(RGB_HUD) RGB_UG(RGB_BRD) RGB_UG(RGB_EFF) _____ _____ _____     _____ _____ _____ &none &none &none &none &none &bootloader
-            &sys_reset  &none           &none           &none           &none           &none           &bt_2 &bt_3 &none     &none &none &none &none &none &none &none &none &sys_reset
-            &none       &none           &none           &none           &none           _____           &bt_0 &bt_1 nOUT(USB) &none &none &none _____ &none &none &none &none &none
+            KP(F1)    &none  &none     &none  &none  _____  _____     _____     _____      _____      _____   _____     _____  &none  &none     &none    &none    KP(F10)
+            KP(EQUAL) KP(N1) KP(N2)    KP(N3) KP(N4) KP(N5) _____     _____     _____      _____      _____   _____     KP(N6) KP(N7) KP(N8)    KP(N9)   KP(N0)   KP(MINUS)
+            KP(TAB)   KP(Q)  KP(W)     KP(E)  KP(R)  KP(T)  _____     _____     _____      _____      _____   _____     KP(Y)  KP(U)  KP(I)     KP(O)    KP(P)    KP(BSLH)
+            KP(ESC)   HM_A   HM_S      HM_D   HM_F   HM_G   _____     _____     _____      _____      _____   _____     HM_H   HM_J   HM_K      HM_L     HM_SEMI  KP(SQT)
+            &none     KP(Z)  KP(X)     KP(C)  KP(V)  KP(B)  MO(L_NAV) MO(L_FUN) &keypad_td &keypad_td &none   &none     KP(N)  KP(M)  KP(COMMA) KP(DOT)  KP(FSLH) &none
+            MAGIC     &none  KP(GRAVE) &none  &none  _____  KP(BSPC)  KP(DEL)   &gaming_td &none      KP(RET) KP(SPACE) _____  &none  KP(LBKT)  KP(RBKT) &none    MAGIC
             >;
         };
 
@@ -398,30 +219,58 @@
             >;
         };
 
-        // fkeys:basic_13-24
-        #define W_LAUNCH6     KP(F15)
-        #define W_LAUNCH7     KP(F16)
-        #define W_LAUNCH8     KP(F17)
-        #define W_LAUNCH9     KP(F18)
+        keypad_layer {
+            bindings = <
+            KP(C_BRI_DN) KP(C_BRI_UP) KP(C_PREV) KP(C_NEXT) KP(C_PP)  _____     _____  _____  _____  _____  _____  _____  _____     KP(C_MUTE) KP(C_VOL_DN) KP(C_VOL_UP)  &none           KP(PAUSE_BREAK)
+            &trans       &none        &none      &none      &none     &none     _____  _____  _____  _____  _____  _____  KP(LPAR)  KP(KP_NUM) KP(KP_EQUAL) KP(KP_DIVIDE) KP(KP_MULTIPLY) KP(PSCRN)
+            &trans       &none        &none      &none      &none     &none     _____  _____  _____  _____  _____  _____  KP(RPAR)  KP(KP_N7)  KP(KP_N8)    KP(KP_N9)     KP(KP_MINUS)    KP(SLCK)
+            &trans       KP(LGUI)     KP(LALT)   KP(LCTRL)  KP(LSHFT) KP(HYPER) _____  _____  _____  _____  _____  _____  KP(PRCNT) KP(KP_N4)  KP(KP_N5)    KP(KP_N6)     KP(KP_PLUS)     &none
+            &trans       &none        &none      &none      &none     &none     &trans &trans TO_DEF TO_DEF &trans &trans KP(COMMA) KP(KP_N1)  KP(KP_N2)    KP(KP_N3)     KP(KP_ENTER)    &trans
+            &trans       &none        &none      &none      &none     _____     &trans &trans &trans &trans &trans &trans _____     KP(KP_N0)  KP(KP_N0)    KP(KP_DOT)    KP(KP_ENTER)    &trans
+            >;
+        };
 
-        #define W_OPEN        KP(K_EXECUTE)
-        #define W_FIND        KP(K_FIND)
-        #define W_MENUKB      KP(C_MENU)
-        #define W_CANCEL      KP(K_STOP)
-        #define W_RELOAD      KP(K_REFRESH)
+        magic_layer {
+            bindings = <
+            BT(CLR)     &none           &none           &none           &none           _____           _____ _____ _____     _____ _____ _____ _____ &none &none &none &none BT(CLR_ALL)
+            &none       &none           &none           &none           &none           &none           _____ _____ _____     _____ _____ _____ &none &none &none &none &none &none
+            &none       RGB_UG(RGB_SPI) RGB_UG(RGB_SAI) RGB_UG(RGB_HUI) RGB_UG(RGB_BRI) RGB_UG(RGB_TOG) _____ _____ _____     _____ _____ _____ &none &none &none &none &none &none
+            &bootloader RGB_UG(RGB_SPD) RGB_UG(RGB_SAD) RGB_UG(RGB_HUD) RGB_UG(RGB_BRD) RGB_UG(RGB_EFF) _____ _____ _____     _____ _____ _____ &none &none &none &none &none &bootloader
+            &sys_reset  &none           &none           &none           &none           &none           &bt_2 &bt_3 &none     &none &none &none &none &none &none &none &none &sys_reset
+            &none       &none           &none           &none           &none           _____           &bt_0 &bt_1 nOUT(USB) &none &none &none _____ &none &none &none &none &none
+            >;
+        };
 
-        #define W_BACK        KP(K_BACK)
-        #define W_CALCULATOR  KP(K_CALCULATOR)
-        #define W_FORWARD     KP(K_FORWARD)
+        function_layer {
+            bindings = <
+            &none &none    &none    &none     &none     _____     _____ _____ _____ _____ _____ _____ _____ &none  &none  &none  &none   &none
+            &none &none    &none    &none     &none     &none     _____ _____ _____ _____ _____ _____ &none &none  &none  &none  &none   &none
+            &none &none    &none    &none     &none     &none     _____ _____ _____ _____ _____ _____ &none KP(F7) KP(F8) KP(F9) KP(F10) KP(F13)
+            &none KP(LGUI) KP(LALT) KP(LCTRL) KP(LSHFT) KP(HYPER) _____ _____ _____ _____ _____ _____ &none KP(F4) KP(F5) KP(F6) KP(F11) KP(F14)
+            &none &none    &none    &none     &none     &none     &none &none &none &none &none &none &none KP(F1) KP(F2) KP(F3) KP(F12) KP(F15)
+            &none &none    &none    &none     &none     _____     &none &none &none &none &none &none _____ &none  &none  &none  &none   &none
+            >;
+        };
+
+        mouse_layer {
+            bindings = <
+            &none &none     &none          KP(HOME)       &none           _____      _____     _____     _____    _____ _____ _____ _____ &none    &none      &none    &none    &none
+            &none &none     KP(K_BACK)     MSC(SCRL_UP)   KP(K_FORWARD)   KP(HYP(P)) _____     _____     _____    _____ _____ _____ &none &none    &none      &none    &none    &none
+            &none KP(PG_UP) MSC(SCRL_LEFT) MMV(MOVE_UP)   MSC(SCRL_RIGHT) KP(LC(X))  _____     _____     _____    _____ _____ _____ &none &none    &none      &none    &none    &none
+            &none KP(PG_DN) MMV(MOVE_LEFT) MMV(MOVE_DOWN) MMV(MOVE_RIGHT) KP(LC(C))  _____     _____     _____    _____ _____ _____ &none KP(RCTL) KP(RSHIFT) KP(RALT) KP(RGUI) &none
+            &none &none     &none          MSC(SCRL_DOWN) &none           KP(LC(V))  MKP(MCLK) &none     MKP(MB4) &none &none &none &none &none    &none      &none    &none    &none
+            &none &none     &none          KP(END)        &none           _____      MKP(LCLK) MKP(RCLK) MKP(MB5) &none &none &none _____ &none    &none      &none    &none    &none
+            >;
+        };
 
         nav_layer {
             bindings = <
-            &none &none    &none    &none     &none      _____     _____ _____ _____ _____ _____ _____ _____    &none    &none       &none     &none     &none
-            &none &none    &none    &none     &none      &none     _____ _____ _____ _____ _____ _____ KP(F16)  KP(F17)  KP(F18)     KP(F19)   KP(F20)   KP(F21)
-            &none &none    &none    &none     &none      &none     _____ _____ _____ _____ _____ _____ KP(BSPC) KP(HOME) KP(UP)      KP(PG_UP) KP(F22)   KP(C_RED)
-            &none KP(LGUI) KP(LALT) KP(LCTRL) KP(LSHIFT) KP(HYPER) _____ _____ _____ _____ _____ _____ KP(RET)  KP(LEFT) KP(DOWN)    KP(RIGHT) KP(F23)   KP(C_GREEN)
-            &none &none    &none    &none     &none      &none     &none &none &none &none &none &none KP(DEL)  KP(END)  KP(K_CMENU) KP(PG_DN) W_FIND    KP(C_BLUE)
-            &none &none    &none    &none     &none      _____     &none &none &none &none &none &none _____    KP(INS)  W_OPEN      W_BACK    W_FORWARD KP(C_YELLOW)
+            &none &none    &none    &none     &none      _____     _____ _____ _____ _____ _____ _____  _____    &none    &none       &none     &none   &none
+            &none &none    &none    &none     &none      &none     _____ _____ _____ _____ _____ _____  KP(F16)  KP(F17)  KP(F18)     KP(F19)   KP(F20) KP(F21)
+            &none &none    &none    &none     &none      &none     _____ _____ _____ _____ _____ _____  KP(BSPC) KP(HOME) KP(UP)      KP(PG_UP) KP(F22) KP(C_RED)
+            &none KP(LGUI) KP(LALT) KP(LCTRL) KP(LSHIFT) KP(HYPER) _____ _____ _____ _____ _____ _____  KP(RET)  KP(LEFT) KP(DOWN)    KP(RIGHT) KP(F23) KP(C_GREEN)
+            &none &none    &none    &none     &none      &none     &none &none &none &none &none &none  KP(DEL)  KP(END)  KP(K_CMENU) KP(PG_DN) W_FIND  KP(C_BLUE)
+            &none &none    &none    &none     &none      _____     &none &none &none &none &none W_OPEN _____    KP(INS)  W_BACK      W_FORWARD &none   KP(C_YELLOW)
             >;
         };
 
